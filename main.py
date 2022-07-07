@@ -45,9 +45,6 @@ def make_request(sku):
         # perform HTTP GET request
         with rq.get(url=url, headers=headers) as req:
             req_content = req.content
-            # print(req_content)
-            # with open('C:/repos/codstore/data/%s' % 'bundle.html', 'wb') as file:
-            #     file.write(req_content)
 
         # parse html response content
         soup = BeautifulSoup(req_content, 'html.parser')
@@ -55,8 +52,8 @@ def make_request(sku):
         bundle_url = soup.find(name='meta', attrs={'property': 'og:url'}).get('content')
 
         # determine if bundle exists
-        if bundle_title != 'My Call of Duty® Bundles':
-            # if 'Vintage Vanguard' in bundle_title:
+        # if bundle_title != 'My Call of Duty® Bundles':
+        if 'Vintage Vanguard' in bundle_title:
             bundle_title = bundle_title.replace(' | My Call of Duty® Bundles', '')
 
             title_list.append(bundle_title)
@@ -76,13 +73,13 @@ def make_request(sku):
 def main():
     try:
         # define variables
-        start = 33000000
-        stop = 33001000 # 34000000
+        start = 33954500
+        stop = 33954700
         skus = range(start, stop)
         skus_len = len(skus)
         sku = 0
 
-        # iterate through SKUs
+        # iterate through SKUs concurrently
         with tqdm(total=skus_len) as pbar:
             with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
                 futures = {executor.submit(make_request, sku): sku for sku in skus}
@@ -97,8 +94,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-    # sku_code = 33954690
-    # sku_code = 0
-    # for sku_code in range(0, 1000000):
-    #     make_request(sku=sku_code)
