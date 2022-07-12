@@ -90,8 +90,8 @@ def main():
         # game = 'cw'
 
         # vg bundles
-        start = 33954444
-        stop = 33954664
+        start = 33954000 # 33954444
+        stop = 33955000 # 33954706
         game = 'vg'
 
         initial_skus = range(start, stop)
