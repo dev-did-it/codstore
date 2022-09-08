@@ -52,7 +52,7 @@ def make_request(sku, game):
         # parse html response content
         soup = BeautifulSoup(req_content, 'html.parser')
         bundle_title = soup.title.string
-        bundle_url = soup.find(name='meta', attrs={'property': 'og:url'}).get('content')
+        # bundle_url = soup.find(name='meta', attrs={'property': 'og:url'}).get('content')
 
         # determine if bundle exists
         if bundle_title != 'My Call of Duty® Bundles':
@@ -60,7 +60,7 @@ def make_request(sku, game):
             bundle_title = bundle_title.replace(' | My Call of Duty® Bundles', '')
 
             title_list.append(bundle_title)
-            url_list.append(bundle_url)
+            url_list.append(url)
             sku_list.append(sku)
 
             # invoke function to write data to file
@@ -84,17 +84,18 @@ def main():
         # stop = 400512
         # game = 'mw'
 
+        # todo: figure out urls for cw bundles as they do not seem to be on website
         # cw bundles
         # start = 29490000
         # stop = 29492000
         # game = 'cw'
 
         # vg bundles
-        start = 33954000 # 33954444
-        stop = 33955000 # 33954706
+        start = 33954800 # 33954000
+        stop = 33954000 # 33955000
         game = 'vg'
 
-        initial_skus = range(start, stop)
+        initial_skus = range(start, stop, -1)
 
         # read skus from file for comparison with sku list
         file_name = 'C:/repos/codstore/data/bundles_{game}.csv'.format(game=game)
