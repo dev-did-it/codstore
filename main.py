@@ -55,7 +55,7 @@ def make_request(sku, game):
         # bundle_url = soup.find(name='meta', attrs={'property': 'og:url'}).get('content')
 
         # determine if bundle exists
-        if bundle_title != 'My Call of Duty® Bundles':
+        if bundle_title not in ('My Call of Duty® Bundles', 'Access Denied'):
         # if 'Vintage Vanguard' in bundle_title:
             bundle_title = bundle_title.replace(' | My Call of Duty® Bundles', '')
 
