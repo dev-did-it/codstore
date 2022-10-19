@@ -4,21 +4,19 @@ import os
 import concurrent.futures
 import requests as rq
 import pandas as pd
+import json
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
 
 # write dataframe to .csv
-def write_data(titles, urls, skus, game):
+def write_data(titles, urls, skus, costs, file_name):
     try:
         # define dict for bundle data
-        bundle_dict = {'title': titles, 'url': urls, 'sku': skus}
+        bundle_dict = {'title': titles, 'url': urls, 'sku': skus, 'cost': costs}
 
         # write dataframe to .csv
         bundle_df = pd.DataFrame.from_dict(data=bundle_dict)
-
-        # set file name and path
-        file_name = 'C:/repos/codstore/data/bundles_{game}.csv'.format(game=game)
 
         # if file does not exist write header
         if not os.path.exists(file_name):
@@ -29,13 +27,38 @@ def write_data(titles, urls, skus, game):
         logging.exception('Exception occurred in write_data(): %s' % ex)
 
 
+# capture bundle cost from alternate url
+def get_bundle_cost(sku, game, headers):
+    try:
+        # build url with sku and game code
+        url = 'https://my.callofduty.com/api/papi-client/inventory/v1/title/{game}/bundle/{sku}/en'.format(sku=sku, game=game)
+
+        # perform HTTP GET request
+        with rq.get(url=url, headers=headers, timeout=1, allow_redirects=False) as req:
+            req_content = req.content
+
+        # parse html response content
+        soup = BeautifulSoup(req_content, 'html.parser')
+
+        # parse json response
+        site_json = json.loads(soup.text)
+
+        # capture bundle cost
+        bundle_cost = site_json['data']['cost']
+
+        return bundle_cost
+    except Exception as ex:
+        logging.exception('Exception occurred in get_bundle_cost(): %s' % ex)
+
+
 # perform an HTTP GET request to cod store with sku code
-def make_request(sku, game):
+def make_request(sku, game, file_name):
     try:
         # define variables
         title_list = []
         url_list = []
         sku_list = []
+        cost_list = []
 
         # set url
         url = 'https://my.callofduty.com/store/sku/{sku}/title/{game}'.format(sku=sku, game=game)
@@ -63,8 +86,12 @@ def make_request(sku, game):
             url_list.append(url)
             sku_list.append(sku)
 
+            # invoke function to get bundle cost
+            bundle_cost = get_bundle_cost(sku, game, headers)
+            cost_list.append(bundle_cost)
+
             # invoke function to write data to file
-            write_data(title_list, url_list, sku_list, game)
+            write_data(title_list, url_list, sku_list, cost_list, file_name)
 
             return bundle_title
         else:
@@ -80,9 +107,9 @@ def main():
         logging.basicConfig(filename='codstore.log', encoding='utf-8', level=logging.DEBUG, filemode='w')
 
         # mw bundles
-        start = 400512 # 400003
-        stop = 400003 # 400512
-        game = 'mw'
+        # start = 400512 # 400003
+        # stop = 400003 # 400512
+        # game = 'mw'
 
         # todo: figure out urls for cw bundles as they do not seem to be on website
         # cw bundles
@@ -91,9 +118,9 @@ def main():
         # game = 'cw'
 
         # vg bundles
-        # start = 33954800 # 33954000
-        # stop = 33954000 # 33955000
-        # game = 'vg'
+        start = 33954800 # 33954000
+        stop = 33954000 # 33955000
+        game = 'vg'
 
         initial_skus = range(start, stop, -1)
 
@@ -112,7 +139,7 @@ def main():
         # iterate through SKUs concurrently
         with tqdm(total=skus_len) as pbar:
             with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-                futures = {executor.submit(make_request, sku, game): sku for sku in skus}
+                futures = {executor.submit(make_request, sku, game, file_name): sku for sku in skus}
                 results = {}
                 for future in concurrent.futures.as_completed(futures):
                     soup = futures[future]
@@ -122,5 +149,49 @@ def main():
         logging.exception('Exception occurred in main(): %s' % ex)
 
 
+# backfill cost for existing bundles
+def backfill_cost():
+    try:
+        pass
+    except Exception as ex:
+        print('Exception occurred in backfill_cost(): %s' % ex)
+
+
+# test running function for single skus
+def test():
+    try:
+        # test
+        start = 33954595
+        stop = 33954594
+        game = 'vg'
+
+        initial_skus = range(start, stop, -1)
+
+        # read skus from file for comparison with sku list
+        file_name = 'C:/repos/codstore/data/bundles_{game}_test.csv'.format(game=game)
+
+        if os.path.exists(file_name):
+            file_skus = pd.read_csv(filepath_or_buffer=file_name, usecols=['sku'])['sku'].to_list()
+            # exclude skus already present in file
+            skus = [s for s in initial_skus if s not in file_skus]
+        else:
+            skus = initial_skus
+
+        skus_len = len(skus)
+
+        # iterate through SKUs concurrently
+        with tqdm(total=skus_len) as pbar:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+                futures = {executor.submit(make_request, sku, game, file_name): sku for sku in skus}
+                results = {}
+                for future in concurrent.futures.as_completed(futures):
+                    soup = futures[future]
+                    results[soup] = future.result()
+                    pbar.update(1)
+    except Exception as ex:
+        print('Exception occurred in test(): %s' % ex)
+
+
 if __name__ == '__main__':
-    main()
+    # main()
+    test()
