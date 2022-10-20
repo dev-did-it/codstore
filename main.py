@@ -57,7 +57,7 @@ def get_bundle_cost(sku, game, headers):
 # backfill cost for existing bundles
 def backfill_cost(game):
     try:
-        file_name = 'C:/repos/codstore/data/bundles_{game}_test.csv'.format(game=game)
+        file_name = 'C:/repos/codstore/data/bundles_{game}.csv'.format(game=game)
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
         }
@@ -209,7 +209,7 @@ def test():
         initial_skus = range(start, stop, -1)
 
         # read skus from file for comparison with sku list
-        file_name = 'C:/repos/codstore/data/bundles_{game}_test.csv'.format(game=game)
+        file_name = 'C:/repos/codstore/data/bundles_{game}.csv'.format(game=game)
 
         if os.path.exists(file_name):
             file_skus = pd.read_csv(filepath_or_buffer=file_name, usecols=['sku'])['sku'].to_list()
@@ -234,6 +234,6 @@ def test():
 
 
 if __name__ == '__main__':
-    # main()
+    main()
     # test()
-    backfill_cost(game='vg')
+    # backfill_cost(game='vg')
