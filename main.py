@@ -89,7 +89,6 @@ def backfill_cost(game):
         # create df from cost dict
         cost_df = pd.DataFrame(data=cost_dict, dtype='int64')
 
-
         # merge costs to bundle dataframe
         df_new = df.merge(right=cost_df, on='sku', how='left')[['title', 'url', 'sku', 'cost_y']]
         df_new.rename(columns={'cost_y': 'cost'}, inplace=True)
@@ -124,11 +123,9 @@ def make_request(sku, game, file_name):
         # parse html response content
         soup = BeautifulSoup(req_content, 'html.parser')
         bundle_title = soup.title.string
-        # bundle_url = soup.find(name='meta', attrs={'property': 'og:url'}).get('content')
 
         # determine if bundle exists
         if bundle_title not in ('My Call of Duty® Bundles', 'Access Denied'):
-        # if 'Vintage Vanguard' in bundle_title:
             bundle_title = bundle_title.replace(' | My Call of Duty® Bundles', '')
 
             title_list.append(bundle_title)
@@ -142,9 +139,8 @@ def make_request(sku, game, file_name):
             # invoke function to write data to file
             write_data(title_list, url_list, sku_list, cost_list, file_name)
 
-            return bundle_title
-        else:
-            return None
+            # invoke function to backfill missing bundle costs
+            backfill_cost(game)
     except Exception as ex:
         logging.exception('Exception occurred in make_request(): %s' % ex)
 
