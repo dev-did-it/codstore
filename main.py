@@ -43,10 +43,13 @@ def get_bundle_cost(sku, game, headers):
         # parse json response
         site_json = json.loads(soup.text)
 
-        # capture bundle cost
-        bundle_cost = site_json['data']['cost']
-
-        return bundle_cost
+        # determine if bundle status is valid
+        if site_json['status'] == 'success':
+            # capture bundle cost
+            bundle_cost = site_json['data']['cost']
+            return bundle_cost
+        else:
+            return None
     except Exception as ex:
         logging.exception('Exception occurred in get_bundle_cost(): %s' % ex)
 
@@ -150,9 +153,44 @@ def main():
 
 
 # backfill cost for existing bundles
-def backfill_cost():
+def backfill_cost(game):
     try:
-        pass
+        file_name = 'C:/repos/codstore/data/bundles_{game}_test.csv'.format(game=game)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+        }
+        cost_dict = {}
+        cost_list = []
+
+        # read bundle .csv
+        df = pd.read_csv(filepath_or_buffer=file_name)
+
+        # determine if cost column exists in dataframe
+        if 'cost' not in df.columns:
+            # create cost column
+            df['cost'] = None
+
+        # exclude skus with an existing cost
+        skus = df['sku'].where(df['cost'].isna())
+
+        for sku in skus:
+            # invoke function to get bundle cost for each sku
+            bundle_cost = get_bundle_cost(sku, game, headers)
+            # append bundle cost to cost list
+            cost_list.append(bundle_cost)
+
+        # populate cost dict
+        cost_dict['sku'] = skus
+        cost_dict['cost'] = cost_list
+        # create df from cost dict
+        cost_df = pd.DataFrame(data=cost_dict)
+
+        # merge costs to bundle dataframe
+        df_new = df.merge(right=cost_df, on='sku', how='left')[['title', 'url', 'sku', 'cost_y']]
+        df_new.rename(columns={'cost_y': 'cost'}, inplace=True)
+
+        # write new dataframe to .csv
+        df_new.to_csv(path_or_buf=file_name, mode='w', index=False, header=True)
     except Exception as ex:
         print('Exception occurred in backfill_cost(): %s' % ex)
 
@@ -194,4 +232,5 @@ def test():
 
 if __name__ == '__main__':
     # main()
-    test()
+    # test()
+    backfill_cost(game='vg')
