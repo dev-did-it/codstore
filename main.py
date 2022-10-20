@@ -54,6 +54,52 @@ def get_bundle_cost(sku, game, headers):
         logging.exception('Exception occurred in get_bundle_cost(): %s' % ex)
 
 
+# backfill cost for existing bundles
+def backfill_cost(game):
+    try:
+        file_name = 'C:/repos/codstore/data/bundles_{game}_test.csv'.format(game=game)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+        }
+        cost_dict = {}
+        cost_list = []
+
+        # read bundle .csv
+        df = pd.read_csv(filepath_or_buffer=file_name)
+
+        # determine if cost column exists in dataframe
+        if 'cost' not in df.columns:
+            # create cost column
+            df['cost'] = None
+
+        # exclude skus with an existing cost
+        skus = df['sku'].where(df['cost'].isna())
+        # todo: uncomment below if you want to overwrite cost for all skus
+        # skus = df['sku']
+
+        for sku in skus:
+            # invoke function to get bundle cost for each sku
+            bundle_cost = get_bundle_cost(sku, game, headers)
+            # append bundle cost to cost list
+            cost_list.append(bundle_cost)
+
+        # populate cost dict
+        cost_dict['sku'] = skus
+        cost_dict['cost'] = cost_list
+        # create df from cost dict
+        cost_df = pd.DataFrame(data=cost_dict, dtype='int64')
+
+
+        # merge costs to bundle dataframe
+        df_new = df.merge(right=cost_df, on='sku', how='left')[['title', 'url', 'sku', 'cost_y']]
+        df_new.rename(columns={'cost_y': 'cost'}, inplace=True)
+
+        # write new dataframe to .csv
+        df_new.to_csv(path_or_buf=file_name, mode='w', index=False, header=True)
+    except Exception as ex:
+        logging.exception('Exception occurred in backfill_cost(): %s' % ex)
+
+
 # perform an HTTP GET request to cod store with sku code
 def make_request(sku, game, file_name):
     try:
@@ -152,49 +198,6 @@ def main():
         logging.exception('Exception occurred in main(): %s' % ex)
 
 
-# backfill cost for existing bundles
-def backfill_cost(game):
-    try:
-        file_name = 'C:/repos/codstore/data/bundles_{game}_test.csv'.format(game=game)
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
-        }
-        cost_dict = {}
-        cost_list = []
-
-        # read bundle .csv
-        df = pd.read_csv(filepath_or_buffer=file_name)
-
-        # determine if cost column exists in dataframe
-        if 'cost' not in df.columns:
-            # create cost column
-            df['cost'] = None
-
-        # exclude skus with an existing cost
-        skus = df['sku'].where(df['cost'].isna())
-
-        for sku in skus:
-            # invoke function to get bundle cost for each sku
-            bundle_cost = get_bundle_cost(sku, game, headers)
-            # append bundle cost to cost list
-            cost_list.append(bundle_cost)
-
-        # populate cost dict
-        cost_dict['sku'] = skus
-        cost_dict['cost'] = cost_list
-        # create df from cost dict
-        cost_df = pd.DataFrame(data=cost_dict)
-
-        # merge costs to bundle dataframe
-        df_new = df.merge(right=cost_df, on='sku', how='left')[['title', 'url', 'sku', 'cost_y']]
-        df_new.rename(columns={'cost_y': 'cost'}, inplace=True)
-
-        # write new dataframe to .csv
-        df_new.to_csv(path_or_buf=file_name, mode='w', index=False, header=True)
-    except Exception as ex:
-        print('Exception occurred in backfill_cost(): %s' % ex)
-
-
 # test running function for single skus
 def test():
     try:
@@ -227,7 +230,7 @@ def test():
                     results[soup] = future.result()
                     pbar.update(1)
     except Exception as ex:
-        print('Exception occurred in test(): %s' % ex)
+        logging.exception('Exception occurred in test(): %s' % ex)
 
 
 if __name__ == '__main__':
