@@ -38,7 +38,7 @@ def get_bundle_cost(sku, game, headers):
             req_content = req.content
 
         # parse html response content
-        soup = BeautifulSoup(req_content, 'html.parser')
+        soup = BeautifulSoup(open(req_content), 'html.parser')
 
         # parse json response
         site_json = json.loads(soup.text)
