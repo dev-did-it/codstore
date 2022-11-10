@@ -152,9 +152,9 @@ def main():
         logging.basicConfig(filename='codstore.log', encoding='utf-8', level=logging.DEBUG, filemode='w')
 
         # mw bundles
-        start = 400512 # 400003
-        stop = 400003 # 400512
-        game = 'mw'
+        # start = 400512 # 400003
+        # stop = 400003 # 400512
+        # game = 'mw'
 
         # todo: figure out urls for cw bundles as they do not seem to be on website
         # cw bundles
@@ -163,9 +163,9 @@ def main():
         # game = 'cw'
 
         # vg bundles
-        # start = 33954800 # 33954000
-        # stop = 33954000 # 33955000
-        # game = 'vg'
+        start = 33954800 # 33954000
+        stop = 33954000 # 33955000
+        game = 'vg'
 
         initial_skus = range(start, stop, -1)
 
