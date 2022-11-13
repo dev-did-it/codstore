@@ -146,26 +146,10 @@ def make_request(sku, game, file_name):
 
 
 # main running function
-def main():
+def main(start, stop, game):
     try:
         # define variables
         logging.basicConfig(filename='codstore.log', encoding='utf-8', level=logging.DEBUG, filemode='w')
-
-        # mw bundles
-        # start = 400512 # 400003
-        # stop = 400003 # 400512
-        # game = 'mw'
-
-        # todo: figure out urls for cw bundles as they do not seem to be on website
-        # cw bundles
-        # start = 29490000
-        # stop = 29492000
-        # game = 'cw'
-
-        # vg bundles
-        start = 33954800 # 33954000
-        stop = 33954000 # 33955000
-        game = 'vg'
 
         initial_skus = range(start, stop, -1)
 
@@ -183,6 +167,7 @@ def main():
 
         # iterate through SKUs concurrently
         with tqdm(total=skus_len) as pbar:
+            pbar.set_description(f'Processing {game} bundles')
             with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
                 futures = {executor.submit(make_request, sku, game, file_name): sku for sku in skus}
                 results = {}
@@ -195,13 +180,8 @@ def main():
 
 
 # test running function for single skus
-def test():
+def test(start, stop, game):
     try:
-        # test
-        start = 33954595
-        stop = 33954594
-        game = 'vg'
-
         initial_skus = range(start, stop, -1)
 
         # read skus from file for comparison with sku list
@@ -218,6 +198,7 @@ def test():
 
         # iterate through SKUs concurrently
         with tqdm(total=skus_len) as pbar:
+            pbar.set_description(f'Processing {game} bundles')
             with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
                 futures = {executor.submit(make_request, sku, game, file_name): sku for sku in skus}
                 results = {}
@@ -230,6 +211,28 @@ def test():
 
 
 if __name__ == '__main__':
-    main()
+    # mw bundles
+    start = 400512 # 400003
+    stop = 400003 # 400512
+    game = 'mw'
+    main(start, stop, game)
+
+    # vg bundles
+    start = 33954800  # 33954000
+    stop = 33954000  # 33955000
+    game = 'vg'
+    main(start, stop, game)
+
+    # todo: figure out urls for cw bundles as they do not seem to be on website
+    # cw bundles
+    # start = 29490000
+    # stop = 29492000
+    # game = 'cw'
+
+    # testing
+    # start = 33954595
+    # stop = 33954594
+    # game = 'vg'
     # test()
+
     # backfill_cost(game='vg')
