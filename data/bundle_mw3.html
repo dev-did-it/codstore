@@ -1,0 +1,3707 @@
+
+
+     
+
+    
+
+
+<!DOCTYPE HTML>
+<html lang="en-CA">
+
+	
+
+
+    
+	
+
+  <head>
+
+	
+	
+
+	<script>
+
+        var curUrl = window.location.href;
+		var isPrevOrStage = window.location.host.includes("stage") || window.location.host.includes("preview") || window.location.host.includes("test");
+        var domain = isPrevOrStage ? "s-dev" : "s";
+        var siteId, fetchUrl;
+
+        if(curUrl.includes("callofduty.com") > 0) {
+            siteId = "cod";
+            fetchUrl = "https://profile.callofduty.com"
+        }
+        else if(curUrl.includes("crashbandicoot.com") > 0) {
+			siteId = "crash";
+            fetchUrl = "https://" + domain + ".crashbandicoot.com";
+        }
+        else if(curUrl.includes("tonyhawkthegame.com") > 0) {
+            siteId = "th";
+            fetchUrl = "https://" + domain + ".tonyhawkthegame.com";
+        }
+        else if(curUrl.includes("sekirothegame.com") > 0) {
+            siteId = "sekiro";
+            fetchUrl = "https://" + domain + ".sekirothegame.com";
+        }
+        else if(curUrl.includes("activision.com") > 0) {
+            siteId = "activision";
+            fetchUrl = "https://" + domain + ".activision.com";
+        }
+
+		var OneTrust = {
+				dataSubjectParams: {
+					id: "",
+					isAnonymous: false,
+					token : ""
+				}
+			};		
+			function otGetCookie (cookieName) {
+				var i = 0,
+					cookies = document.cookie.split(";"),
+					length = cookies.length,
+					trimRegex = /^\s+|\s+$/g,
+					cookiePair;
+
+				for (; i < length; i++) {
+					cookiePair = cookies[i].split('=');				
+					if (cookiePair[0].replace(trimRegex, '') === cookieName) return unescape(cookiePair[1]);
+				}
+			}
+			var loggedIn = otGetCookie("ACT_SSO_COOKIE") || otGetCookie("s_ACT_SSO_COOKIE") || false;
+			if(loggedIn) {
+
+				var xsrfToken = otGetCookie("XSRF-TOKEN");
+				var ssoCookieValue = otGetCookie("ACT_SSO_COOKIE");
+    			var headers = {
+        			'Cookie': "ACT_SSO_COOKIE=" + ssoCookieValue,
+					'X-XSRF-TOKEN': xsrfToken
+    			}
+
+				fetch(fetchUrl + "/" + siteId + "/regulations/onetrust/auth", {
+					method: "POST",
+            		credentials: 'include',
+            		mode: 'cors',
+					headers: headers
+				})
+				.then((response) => response.json())
+				.then((json) => { 
+					OneTrust = {
+						dataSubjectParams: {
+							id: json.userId,
+							isAnonymous: false,
+							token : json.token
+						}
+					};
+					console.log("OneTrust: ",OneTrust);
+				})
+        		.catch(error => {
+                    // Handle errors
+                    console.error('Fetch error:', error); 
+                });
+			}
+			window.addEventListener("OneTrustGroupsUpdated", handleOneTrustGroupsUpdated);
+		    function handleOneTrustGroupsUpdated() {
+				if(loggedIn) {
+        			var xsrfToken = otGetCookie("XSRF-TOKEN");
+                    var ssoCookieValue = otGetCookie("ACT_SSO_COOKIE");
+                    var headers = {
+            			'Cookie': "ACT_SSO_COOKIE=" + ssoCookieValue,
+                        'X-XSRF-TOKEN': xsrfToken
+                    };
+					fetch(fetchUrl + "/" + siteId + "/regulations/onetrust/preferences?activeGroups=" + OnetrustActiveGroups, {
+							method: "POST",
+							credentials: 'include',
+                			mode: 'cors',
+							headers: headers
+					})
+            		.catch(error => {
+                        // Handle errors
+                        console.error('Fetch error:', error);
+                    });
+
+				}
+			}
+
+	</script>
+
+
+
+    <meta charset="UTF-8"/>
+
+    <meta name="country" content="US"/>
+
+	
+    
+
+         <script>var dataLayer = dataLayer || [],
+    	         digitalData = {"page":{"pageInfo":{"charSet":"UTF-8","language":"EN_CA","country":"US","site":"callofduty","pageName":"callofduty:store:bundles:tech-luxe","siteSection":"store","siteSubsection":"tech-luxe"},"pageCategory":{"primaryCategory":"store","pageType":"sub category","subCategory1":"bundles"},"targetEntity":{"locale":"en_ca_US","brand":"callofduty","categoryId":"['store', 'store:bundles', 'callofduty:store:bundles:tech-luxe']","pageURL":"https://www.callofduty.com/content/atvi/callofduty/store/web/en_ca/bundles/tech-luxe.html","id":"tech-luxe","name":"Call of Duty Store | Tech Luxe"}}};
+    </script>
+
+    
+    
+
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+	
+    	<script src="//cdn.optimizely.com/js/18240914759.js" type="text/plain" class="opt-anon-category-2"></script>
+    
+
+
+    
+    
+
+     
+     
+    <base href="https://www.callofduty.com"/> 
+
+
+
+	
+    
+
+    
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;j.addEventListener('load', function() { var _ge = new CustomEvent('gtm_loaded', { bubbles: true });                                                                                                                                                                           d.dispatchEvent(_ge);});f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T6X8245');</script>
+    
+
+
+    
+    
+
+     <title>Call of Duty Store | Tech Luxe</title>
+
+
+    
+    
+
+    <meta name="template" content="cod-store-standard-template"/>
+    
+
+
+
+    
+    
+
+    
+
+
+	
+
+    
+        
+       	
+    
+
+	<link rel="image_src"/>
+
+    <meta property="og:title" content="Call of Duty Store | Tech Luxe"/>
+    
+	
+	
+	<meta property="og:type" content="website"/>
+
+    
+    
+    
+
+    <meta name="twitter:title" content="Call of Duty Store | Tech Luxe"/>
+    
+	
+    
+    <meta name="twitter:card" content="summary_large_image"/>
+	<meta name="twitter:site" content="@CallofDuty"/>
+    <meta name="twitter:url" content="https://www.callofduty.com"/>
+
+    <!-- END SHARE META TAGS -->
+
+
+    
+    
+		
+
+
+   
+
+	
+
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "VideoGame",
+          "author": {
+                "@type": "Organization", 
+                "name": [""]
+          },
+          "contentRating": "",
+          "datePublished": "",
+          "description": "",
+          "gamePlatform": [],
+          "genre": ["Action Shooter"],
+          "image": "",
+          "name": "",
+	      "contentLocation": [],
+		  "playMode": [],
+		  "isAccessibleForFree": "False",
+          "inLanguage": [
+                {
+                    "@type": "Language",
+                    "name": "English"
+                }
+            ],
+            "thumbnailUrl": "",
+            "publisher": {
+                "@type": "Organization",
+                "name": "Activision Publishing",
+                "sameAs": [
+                    "http://www.activision.com",
+                    "https://www.youtube.com/user/ActivisionGames",
+                    "http://en.wikipedia.org/wiki/Activision"
+                ]
+
+            },        
+            "applicationCategory": "Game",
+            "operatingSystem": [],
+            "url": "",
+            "isPartOf": {
+                "@type":"VideoGameSeries",
+                "name":""
+            }
+        }
+
+    	</script>
+
+    
+    <!-- END SCHEMA TAGS -->
+
+    
+    
+    
+
+	<script> 
+        var ATVI = ATVI || {},
+			wcmmode;
+		if (false) wcmmode = 'edit';
+		if (false) wcmmode = 'design';
+		if (!false && !false) wcmmode = '';
+		ATVI.pageMode = wcmmode;
+		ATVI.pageEnv = ('www.callofduty.com'.indexOf('cmsauthor') > -1) ? 'dev' : 'prod';
+		ATVI.pageLocale = 'en-CA';
+	</script>
+
+
+
+    
+    
+
+   
+
+   
+    <script>
+		(function() {
+            var winUrl = window.location.hostname,
+            	url = 'https://profile.callofduty.com/resources/common/scripts/sso.bar.js',
+            	prev = 'https://profile-dev.callofduty.com/resources/common/scripts/sso.bar.js',
+            	stage = 'https://profile-stage.callofduty.com/resources/common/scripts/sso.bar.js',
+            	author = '',
+            	scriptTag = document.createElement('script');
+            if (winUrl.indexOf('preview.') > -1 || winUrl.indexOf('test.') > -1 && prev) url = prev; //switch between "prev" and "url" for support team.
+            if (winUrl.indexOf('stage.') > -1 && stage) url = stage;
+            if (winUrl.indexOf('cmsauthor') > -1 && author) url = author;
+            scriptTag.setAttribute('src', url);
+            scriptTag.id = 'sso-bar-script';
+            document.write(scriptTag.outerHTML);
+        })();
+
+        var config = {
+			containerId: 'cdo-bar',
+    		locale: 'en_CA',
+			cms: true,
+    		communityId: 'cod',
+    		customSupportPath: '' || null
+        };
+
+    </script>
+
+    
+    	<script>
+        	(function() {
+                var initSsoLibrary = function() {
+                    if (typeof SSO == "object") {
+                        window.ssobar = new SSO.Bar(config);
+                	} else {
+                    	setTimeout(function() {
+                        	initSsoLibrary();
+                        }, 250);
+                    }
+                };
+                initSsoLibrary();
+			})();
+      	  </script>
+		
+   
+
+
+
+    
+    
+
+    
+
+	
+
+    
+
+	
+
+    
+
+    
+
+    
+    
+<link rel="stylesheet" href="/apps/atvi/global/clientlibs.3bf3f28740b0f13f93c845b52b11a008.css" type="text/css"><script type="text/javascript" src="/apps/atvi/global/clientlibs.2985779e4dc0d0b3028f3ae8d36cff75.js"></script>
+
+
+
+    
+        
+    
+<link rel="stylesheet" href="/apps/atvi/callofduty/store/core/clientlibs.59e742655657130724e7d9736c718225.css" type="text/css"><link rel="stylesheet" href="/apps/atvi/callofduty/store/components/pages/bundles/clientlibs.1c1abcc4f80a8f86bbe1c68d58818ee1.css" type="text/css"><script type="text/javascript" src="/apps/atvi/callofduty/store/core/clientlibs.09a6f1194ba2701caa1c232e2bd2682a.js" defer></script><script type="text/javascript" src="/apps/atvi/callofduty/store/components/pages/bundles/clientlibs.f8c3bd942f89615506b228adeb3fcea3.js" defer></script>
+
+
+    
+
+    
+
+
+
+
+	
+    
+	
+	
+	
+	
+	
+        
+        
+            <link rel="alternate" hreflang="en" href="https://www.callofduty.com/content/atvi/callofduty/store/web/en/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="en_my" href="https://www.callofduty.com/content/atvi/callofduty/store/web/en_my/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="es_cl" href="https://www.callofduty.com/content/atvi/callofduty/store/web/es_cl/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="zh_tw" href="https://www.callofduty.com/content/atvi/callofduty/store/web/zh_tw/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="zh_cn" href="https://www.callofduty.com/content/atvi/callofduty/store/web/zh_cn/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="sv" href="https://www.callofduty.com/content/atvi/callofduty/store/web/sv/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="fi" href="https://www.callofduty.com/content/atvi/callofduty/store/web/fi/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="da" href="https://www.callofduty.com/content/atvi/callofduty/store/web/da/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="no" href="https://www.callofduty.com/content/atvi/callofduty/store/web/no/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="th" href="https://www.callofduty.com/content/atvi/callofduty/store/web/th/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="tr" href="https://www.callofduty.com/content/atvi/callofduty/store/web/tr/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="ru" href="https://www.callofduty.com/content/atvi/callofduty/store/web/ru/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="ko" href="https://www.callofduty.com/content/atvi/callofduty/store/web/ko/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="pl" href="https://www.callofduty.com/content/atvi/callofduty/store/web/pl/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="nl_be" href="https://www.callofduty.com/content/atvi/callofduty/store/web/nl_be/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="nl" href="https://www.callofduty.com/content/atvi/callofduty/store/web/nl/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="ar" href="https://www.callofduty.com/content/atvi/callofduty/store/web/ar/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="ja" href="https://www.callofduty.com/content/atvi/callofduty/store/web/ja/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="pt_br" href="https://www.callofduty.com/content/atvi/callofduty/store/web/pt_br/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="pt" href="https://www.callofduty.com/content/atvi/callofduty/store/web/pt/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="de" href="https://www.callofduty.com/content/atvi/callofduty/store/web/de/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="it" href="https://www.callofduty.com/content/atvi/callofduty/store/web/it/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="es_mx" href="https://www.callofduty.com/content/atvi/callofduty/store/web/es_mx/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="es" href="https://www.callofduty.com/content/atvi/callofduty/store/web/es/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="fr_ca" href="https://www.callofduty.com/content/atvi/callofduty/store/web/fr_ca/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="fr" href="https://www.callofduty.com/content/atvi/callofduty/store/web/fr/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="fr_be" href="https://www.callofduty.com/content/atvi/callofduty/store/web/fr_be/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="en_nz" href="https://www.callofduty.com/content/atvi/callofduty/store/web/en_nz/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="en_ar" href="https://www.callofduty.com/content/atvi/callofduty/store/web/en_ar/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="en_au" href="https://www.callofduty.com/content/atvi/callofduty/store/web/en_au/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="en_ca" href="https://www.callofduty.com/content/atvi/callofduty/store/web/en_ca/bundles/tech-luxe"/>
+        
+        
+    
+        
+        
+            <link rel="alternate" hreflang="en_gb" href="https://www.callofduty.com/content/atvi/callofduty/store/web/en_gb/bundles/tech-luxe"/>
+        
+        
+    
+
+	
+    
+    
+
+  
+
+
+    
+    
+    
+    
+    <link rel="icon" href="/content/dam/atvi/callofduty/global/favicon/favicon.ico"/>
+	<link rel="icon" type="image/vnd.microsoft.icon" href="/content/dam/atvi/callofduty/global/favicon/favicon.ico"/>
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="/content/dam/atvi/callofduty/global/favicon/favicon.ico"/>
+
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=100"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<link rel="apple-touch-icon" href="https://www.activision.com/content/dam/atvi/global/apple-touch-icon.png"/>
+	<meta name="robots" content="max-image-preview:large"/>
+
+    
+	
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+
+    
+    
+        
+    
+
+    
+    
+<link rel="stylesheet" href="/libs/wcm/foundation/components/page/responsive.6b768e2136fcc283bddfd16e964001ab.css" type="text/css">
+
+
+
+    
+
+    <!--adobe launch header scripts-->
+        
+
+    <!--end adobe launch scripts-->
+
+
+	
+	
+
+	
+
+
+  </head>
+
+
+	
+    
+
+
+<body id="tech-luxe">
+
+
+		
+		
+
+    
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T6X8245" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+	
+
+
+
+        
+        
+	
+
+
+    
+
+        
+        <div class="root responsivegrid">
+
+
+<div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+    
+    <div class="atvi-experiencefragment aem-GridColumn aem-GridColumn--default--12">
+
+
+    
+    
+		<div id="atvi_experiencefragm" class=" atvi-module-container">
+			
+
+<section class="experience-fragment-container ">
+	
+
+	
+
+
+<div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+    
+    <div class="responsivegrid aem-GridColumn aem-GridColumn--default--12">
+
+
+<div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+    
+    <div class="cod-single-header aem-GridColumn aem-GridColumn--default--12">            
+
+    
+<link rel="stylesheet" href="/apps/atvi/callofduty/global/components/structure/v2023/cod-single-header/clientlibs.750b446e675e134164800baeefe07fe5.css" type="text/css">
+<script src="/apps/atvi/callofduty/global/components/structure/v2023/cod-single-header/clientlibs.5a75b222e66c9e0ab63f941eaa6424b8.js"></script>
+
+
+      
+
+
+ 
+
+
+
+
+
+ 
+
+<header id="cod-single-header" class="cod-game-header ">
+
+	<a class="skip-to-main-content-link" href="#main-content">Skip To Main Content</a>
+
+	<div class="cod-header_inner-container">
+
+		
+		<div class="cod-header_mobile-menu" aria-expanded="false">
+
+			
+			<div class="cod-header_mobile-button">
+
+                <button>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+			</div>
+
+			
+			<div class="cod-header_mobile-dropdown">
+
+				<div class="cod-header_mobile-dropdown-inner-container">
+
+                    
+                    <div class="cod-header_mobile-secondary-menu">
+
+                        
+                        
+
+	 
+	
+
+	<a href="/ca/en/store" aria-label="Visit the Call of Duty Store">
+		<img src="/content/dam/atvi/callofduty/cod-touchui/global/nav-logos/cod-store-logo.png" alt="Call of Duty Store logo"/>
+	</a>	
+
+
+    
+                        
+                        
+
+	 
+
+	<ul role="menubar" id="menubar2" aria-label=" Menu">
+
+		
+            
+                
+    
+			<li role="none" data-index="0">
+
+                <a href="/ca/en/store/games" role="menuitem" aria-haspopup="false" tabindex="0" data-entext="Games">
+
+					Games 
+
+                </a>
+
+				
+                
+            </li>
+		
+            
+                
+    
+			<li role="none" data-index="1">
+
+                <a href="/ca/en/store/blackcell" role="menuitem" aria-haspopup="false" tabindex="0" data-entext="BlackCell">
+
+					BlackCell 
+
+                </a>
+
+				
+                
+            </li>
+		
+            
+                
+    
+			<li role="none" data-index="2">
+
+                <a href="/ca/en/store/bundles" role="menuitem" aria-haspopup="false" tabindex="0" data-entext="Bundles">
+
+					Bundles 
+
+                </a>
+
+				
+                
+            </li>
+		
+            
+                
+    
+			<li role="none" data-index="3">
+
+                <a href="/ca/en/store/cod-points" role="menuitem" aria-haspopup="false" tabindex="0" data-entext="COD Points">
+
+					COD Points 
+
+                </a>
+
+				
+                
+            </li>
+		
+            
+                
+    
+			<li role="none" data-index="4">
+
+                <a href="https://shop.callofduty.com" role="menuitem" aria-haspopup="false" tabindex="0" data-entext="Gear Shop">
+
+					Gear Shop 
+
+                </a>
+
+				
+                
+            </li>
+		
+
+		<li class="nav-ellipsis-dropdown">
+        	<button class="nav-ellipsis-dropdown-toggle" aria-label="See more links"><span>...</span></button>
+        	<ul class="nav-ellipsis-dropdown-menu"></ul>
+        </li>
+	</ul>
+
+
+
+                    </div>
+    
+                    
+                    <div class="cod-header_mobile-primary-menu">
+
+                        
+                        
+
+     
+    
+
+	<a href="https://www.callofduty.com/ca/en" aria-label="Visit the Call of Duty home page">
+
+		<img src="/content/dam/atvi/callofduty/cod-touchui/global/cod-logo.svg" alt="Call of Duty logo"/>
+
+	</a>	
+
+
+    
+                        
+                        
+
+	 
+	
+
+	<ul class="cod-header_global-list">
+		<li role="none" data-index="0" class="dd" aria-expanded="false"><a href="#" data-entext="Games">Games <span class="expand-arrow"></span></a>
+    		<ul>
+				<li>
+
+	<a href="/ca/en/modernwarfare3">Modern Warfare III <span class="expand-arrow"></span></a>
+
+</li>
+				<li>
+
+	<a href="/ca/en/modernwarfare2">Modern Warfare II <span class="expand-arrow"></span></a>
+
+</li>
+                <li>
+
+	<a href="/ca/en/warzone">COD: Warzone <span class="expand-arrow"></span></a>
+
+</li>
+				<li>
+
+	<a href="/ca/en/warzonemobile">Warzone Mobile <span class="expand-arrow"></span></a>
+
+</li>
+				<li>
+
+	<a href="/ca/en/mobile">Call of Duty Mobile <span class="expand-arrow"></span></a>
+
+</li>
+    		</ul>
+    	</li>
+		<li role="none" data-index="1" class="dd" aria-expanded="false"><a href="#" data-entext="News">News <span class="expand-arrow"></span></a>
+            <ul>
+				<li>
+
+	<a href="/ca/en/blog">Blog <span class="expand-arrow"></span></a>
+
+</li>
+				<li>
+
+	<a href="/guides">Guides <span class="expand-arrow"></span></a>
+
+</li>
+				<li>
+
+	<a href="/ca/en/patchnotes">Patch Notes <span class="expand-arrow"></span></a>
+
+</li>
+            </ul>
+    	</li>
+		<li role="none" data-index="2" aria-expanded="false">
+			
+
+	<a href="/ca/en/store">Store <span class="expand-arrow"></span></a>
+
+
+            
+		</li>
+		<li role="none" data-index="3" class="dd" aria-expanded="false">
+			<a href="#" data-entext="Esports">Esports <span class="expand-arrow"></span></a>
+			<ul>
+            	<li>
+					<a href="https://www.callofdutyleague.com/en-us/" aria-label="Visit the Call of Duty League website" target="_blank" data-entext="Call of Duty League">Call of Duty League</a>
+				</li>
+            	<li>
+					
+
+	<a href="/ca/en/mobile/esports">Call of Duty Mobile World Championship <span class="expand-arrow"></span></a>
+
+
+				</li>
+            	<li>
+					<a href="https://www.worldseriesofwarzone.com/" aria-label="Visit the World Series of Warzone website" target="_blank" data-entext="World Series of Warzone">World Series of Warzone</a>
+				</li>
+            </ul>
+    	</li>
+		<li role="none" data-index="4"><a href="https://support.activision.com" aria-label="Visit the Activision Support website" target="_blank" data-entext="Support">Support</a></li>
+		<li class="nav-ellipsis-dropdown">
+        	<button class="nav-ellipsis-dropdown-toggle" aria-label="See more links"><span>...</span></button>
+        	<ul class="nav-ellipsis-dropdown-menu"></ul>
+        </li>
+    </ul>
+
+ 
+    
+                    </div>
+    
+                    
+                    <div class="cod-header_mobile-sso">
+    
+                        <div class="logged-out">
+                            <a role="menuitem" class="sso-login" href="https://profile.callofduty.com/cod/login" data-entext="Login">Login</a> | <a href="https://profile.callofduty.com/cod/signup" class="sso-signup" aria-label="Sign up for a Call of Duty account" data-entext="Sign Up">Sign up</a>
+                        </div>
+
+                        <div class="logged-in">
+                            <a role="menuitem" class="sso-profile" href="https://profile.callofduty.com/cod/profile" aria-label="Visit your Call of Duty profile" data-entext="Profile">Profile</a> | <a role="menuitem" class="sso-logout" href="https://profile.callofduty.com/do_logout" aria-label="Log out of your account" data-entext="Sign Out">Sign Out</a>
+                        </div>
+    
+                    </div>
+
+                </div>
+
+			</div>
+
+		</div>
+
+		
+		<div class="cod-header_primary-logo">
+
+			
+
+     
+    
+
+	<a href="https://www.callofduty.com/ca/en" aria-label="Visit the Call of Duty home page">
+
+		<img src="/content/dam/atvi/callofduty/cod-touchui/global/cod-logo.svg" alt="Call of Duty logo"/>
+
+	</a>	
+
+
+
+		</div>
+
+		
+		<div class="cod-header_secondary-logo">
+
+            
+
+	 
+	
+
+	<a href="/ca/en/store" aria-label="Visit the Call of Duty Store">
+		<img src="/content/dam/atvi/callofduty/cod-touchui/global/nav-logos/cod-store-logo.png" alt="Call of Duty Store logo"/>
+	</a>	
+
+
+
+		</div>
+
+		
+		<div class="cod-header_top-nav">
+
+			<div class="cod-header_desktop-nav_links">
+
+				<nav>
+
+                    
+                    
+
+                    
+                    
+
+	 
+
+	<ul role="menubar" id="menubar2" aria-label=" Menu">
+
+		
+            
+                
+    
+			<li role="none" data-index="0">
+
+                <a href="/ca/en/store/games" role="menuitem" aria-haspopup="false" tabindex="0" data-entext="Games">
+
+					Games 
+
+                </a>
+
+				
+                
+            </li>
+		
+            
+                
+    
+			<li role="none" data-index="1">
+
+                <a href="/ca/en/store/blackcell" role="menuitem" aria-haspopup="false" tabindex="0" data-entext="BlackCell">
+
+					BlackCell 
+
+                </a>
+
+				
+                
+            </li>
+		
+            
+                
+    
+			<li role="none" data-index="2">
+
+                <a href="/ca/en/store/bundles" role="menuitem" aria-haspopup="false" tabindex="0" data-entext="Bundles">
+
+					Bundles 
+
+                </a>
+
+				
+                
+            </li>
+		
+            
+                
+    
+			<li role="none" data-index="3">
+
+                <a href="/ca/en/store/cod-points" role="menuitem" aria-haspopup="false" tabindex="0" data-entext="COD Points">
+
+					COD Points 
+
+                </a>
+
+				
+                
+            </li>
+		
+            
+                
+    
+			<li role="none" data-index="4">
+
+                <a href="https://shop.callofduty.com" role="menuitem" aria-haspopup="false" tabindex="0" data-entext="Gear Shop">
+
+					Gear Shop 
+
+                </a>
+
+				
+                
+            </li>
+		
+
+		<li class="nav-ellipsis-dropdown">
+        	<button class="nav-ellipsis-dropdown-toggle" aria-label="See more links"><span>...</span></button>
+        	<ul class="nav-ellipsis-dropdown-menu"></ul>
+        </li>
+	</ul>
+
+
+                    
+
+				</nav>
+
+			</div>
+
+		</div>
+
+		
+		<div class="cod-header_sso">
+
+			<div class="logged-out">
+				<a href="https://profile.callofduty.com/cod/login" class="sso-login" aria-label="Log into your Call of Duty account">Login</a>  |  <a href="https://profile.callofduty.com/cod/signup" class="sso-signup" aria-label="Sign up for a Call of Duty account">Sign up</a>
+			</div>
+                    
+			<div class="logged-in" aria-expanded="false">
+
+                <div class="account-name">
+                	<img src="/content/dam/atvi/callofduty/global/global-nav/profile_icon.png" alt="Profile Avatar logo"/> <span id="username"></span>
+                </div>
+                    
+                <ul>
+                	<li><a href="https://profile.callofduty.com/cod/profile" class="sso-profile" data-entext="Linked Accounts">Linked Accounts</a></li>
+                	<li><a href="https://profile.callofduty.com/cod/info" class="sso-info" data-entext="Basic Info">Basic Info</a></li>
+                	<li><a href="https://profile.callofduty.com/cod/prefs" class="sso-preference" data-entext="Preferences">Preferences</a></li>
+                	<li><a href="https://profile.callofduty.com/do_logout" class="sso-logout" data-entext="Sign Out">Sign Out</a></li>
+                </ul>
+                    
+			</div>
+
+		</div>
+
+		
+		
+
+		
+		
+
+		
+		
+
+	</div>
+
+</header></div>
+
+    
+</div>
+</div>
+
+    
+</div>
+
+</section>
+		</div>
+	
+</div>
+<div class="responsivegrid aem-GridColumn aem-GridColumn--default--12">
+
+
+<div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+    
+    <div class="atvi-layout-container aem-GridColumn aem-GridColumn--default--12">
+
+
+
+
+
+
+
+
+
+
+<div id="main-content" class="layout-container-element  atvi-module-container">
+
+    
+    <div class="breadcrumbs aem-GridColumn aem-GridColumn--default--12">
+    
+<link rel="stylesheet" href="/apps/atvi/callofduty/global/components/content/breadcrumbs/clientlibs.e349216c7dc3e522d74f798b73af5eb6.css" type="text/css">
+<script src="/apps/atvi/callofduty/global/components/content/breadcrumbs/clientlibs.d41d8cd98f00b204e9800998ecf8427e.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    
+
+
+
+
+
+
+<div class="breadcrumbs-container ">
+
+	<nav class="breadcrumb" aria-label="Breadcrumb">
+
+         <ol class="breadcrumb__list" itemscope itemtype="http://schema.org/BreadcrumbList">
+
+            <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                <a href="/ca/en/store" class="breadcrumb__item-link" itemprop="item">
+                    <span itemprop="name">Store</span>
+                </a>
+
+                <meta itemprop="position" content="1"/>
+
+            </li>
+
+        
+
+            <li class="breadcrumb__item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                <a href="/ca/en/store/bundles" class="breadcrumb__item-link" itemprop="item">
+                    <span itemprop="name">Bundles</span>
+                </a>
+
+                <meta itemprop="position" content="2"/>
+
+            </li>
+
+        
+
+            <li class="breadcrumb__item breadcrumb__item--active" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+
+                
+                    <span itemprop="name">TECH LUXE PRO PACK</span>
+                
+
+                <meta itemprop="position" content="3"/>
+
+            </li>
+
+        </ol>
+
+    </nav>
+
+</div></div>
+<div class="cod-store-bundle-layout aem-GridColumn aem-GridColumn--default--12">
+    
+<link rel="stylesheet" href="/apps/atvi/callofduty/store/core/clientlibs.59e742655657130724e7d9736c718225.css" type="text/css">
+<link rel="stylesheet" href="/apps/atvi/callofduty/store/components/pages/bundles/cod-store-bundle-layout/clientlibs.cc212fd09d2cc53cc0ec430e7bf85fa9.css" type="text/css">
+<script src="/apps/atvi/callofduty/store/core/clientlibs.09a6f1194ba2701caa1c232e2bd2682a.js"></script>
+<script src="/apps/atvi/callofduty/store/components/pages/bundles/cod-store-bundle-layout/clientlibs.523a3517c756f1340beb8bee558f451f.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<main id="bundle-layout-main" class="store-bundle-layout-container">
+  <div class="inner-container">
+    <div class="store-bundle-header-container">
+      <div class="media-container">
+        <img class="hero-img" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/tech-luxe/TechLuxe_Hero.webp" alt=""/>
+        
+      </div>
+      <div class="overview-container">
+        <div class="eyebrow-container">
+          <p class="eyebrow">Pro Pack Bundle</p>
+          <ul>
+            <li>mwIII</li>
+          
+            <li>wz</li>
+          </ul>
+        </div>
+        <h1>TECH LUXE</h1>
+        <p>Show off your fit with the Tech Luxe Pro Pack<br />
+Includes: Jet Operator Skin, 2 Weapon Blueprints, 2400 Call of Duty® Points, and more...</p>
+
+      </div>
+    </div>
+    <div class="store-bundle-body-container">
+      <div class="body-content mw3-subpage-features-cards">
+
+
+<div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+    
+    <div class="atvi-text aem-GridColumn aem-GridColumn--default--12">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div>
+
+     
+
+     <h2>Contents:</h2>
+
+
+</div>
+
+</div>
+<div class="atvi-card aem-GridColumn aem-GridColumn--default--12">
+
+    
+<link rel="stylesheet" href="/apps/atvi/global/components/content/atvi-card/clientlibs.8d644b38596e100eb09bfb5981057c37.css" type="text/css">
+<script src="/apps/atvi/global/components/content/atvi-card/clientlibs.5e84bd83d4d59c46bb6c27ad19ef40b1.js"></script>
+
+
+
+
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+	
+	
+
+        @media screen and (max-width: 833px) {
+
+    		
+            #operator-card.atvi-card-flexbox-layout > .atvi-card-inner-container {
+				flex-direction: column;
+                height: auto;
+            }
+
+            #operator-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-media-container,
+			#operator-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-content-container {
+                width: 100%;
+                position: unset;
+            }
+
+			
+			
+
+        }
+
+		
+		
+
+
+    
+
+    
+	
+
+</style>
+
+
+<div id="operator-card" class="atvi-card-container image-left-aligned contents atvi-card- atvi-card-grid-layout" data-atvi-card-type="image">
+
+	<div class="atvi-card-inner-container">
+
+		<div class="atvi-card-media-container">
+
+			<div class="atvi-card-media">
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+                
+
+				
+                
+
+    <div class="atvi-card-image">
+
+        
+        <picture>
+            
+            
+			
+
+			<img src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/tech-luxe/tactical-streets.webp" role="img"/>
+        </picture>
+
+    </div>
+
+
+
+                
+				
+
+			</div> 
+
+		</div> 
+
+		<div class="atvi-card-content-container">
+
+			<div class="atvi-card-content">
+
+                
+				
+
+				
+				
+
+                    
+                    
+
+                    
+                    <div class="atvi-card-text">
+
+                        
+
+                        <div><p>OPERATOR SKIN</p>
+<p>JET</p>
+</div>
+<h2>TACTICAL STREETS</h2>
+<p>Stay tactical and stay fashionable with this urban Operator Skin.</p>
+<p>Finishing Move: Stick N' Move</p>
+
+
+                    </div> 
+    
+                    
+					 
+
+				
+
+			</div> 
+
+		</div> 
+
+	</div> 
+
+</div>
+
+</div>
+<div class="atvi-card aem-GridColumn aem-GridColumn--default--12">
+
+    
+
+
+
+
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+	
+	
+
+        @media screen and (max-width: 833px) {
+
+    		
+            #dead-hand-card.atvi-card-flexbox-layout > .atvi-card-inner-container {
+				flex-direction: column;
+                height: auto;
+            }
+
+            #dead-hand-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-media-container,
+			#dead-hand-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-content-container {
+                width: 100%;
+                position: unset;
+            }
+
+			
+			
+
+        }
+
+		
+		
+
+
+    
+
+    
+	
+
+</style>
+
+
+<div id="dead-hand-card" class="atvi-card-container image-left-aligned normal contents atvi-card- atvi-card-grid-layout" data-atvi-card-type="image">
+
+	<div class="atvi-card-inner-container">
+
+		<div class="atvi-card-media-container">
+
+			<div class="atvi-card-media">
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+                
+
+				
+                
+
+    <div class="atvi-card-image">
+
+        
+        <picture>
+            
+            
+			
+
+			<img src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/tech-luxe/dead-hand.webp" role="img"/>
+        </picture>
+
+    </div>
+
+
+
+                
+				
+
+			</div> 
+
+		</div> 
+
+		<div class="atvi-card-content-container">
+
+			<div class="atvi-card-content">
+
+                
+				
+
+				
+				
+
+                    
+                    
+
+                    
+                    <div class="atvi-card-text">
+
+                        
+
+                        <div><p>BATTLE RIFLE</p>
+<p>BAS-B</p>
+</div>
+<h2>DEAD HAND</h2>
+<p>Bring death in your hands with this skeletal Blueprint.</p>
+<ul>
+<li>PRO-TUNED ADVANTAGE:</li>
+<li>RECOIL CONTROL</li>
+<li>BULLET VELOCITY &amp; RANGE</li>
+<li>MAGAZINE AMMO CAPACITY</li>
+</ul>
+
+
+                    </div> 
+    
+                    
+					 
+
+				
+
+			</div> 
+
+		</div> 
+
+	</div> 
+
+</div>
+
+</div>
+<div class="atvi-card aem-GridColumn aem-GridColumn--default--12">
+
+    
+
+
+
+
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+	
+	
+
+        @media screen and (max-width: 833px) {
+
+    		
+            #technofyre-card.atvi-card-flexbox-layout > .atvi-card-inner-container {
+				flex-direction: column;
+                height: auto;
+            }
+
+            #technofyre-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-media-container,
+			#technofyre-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-content-container {
+                width: 100%;
+                position: unset;
+            }
+
+			
+			
+
+        }
+
+		
+		
+
+
+    
+
+    
+	
+
+</style>
+
+
+<div id="technofyre-card" class="atvi-card-container image-left-aligned normal contents atvi-card- atvi-card-grid-layout" data-atvi-card-type="image">
+
+	<div class="atvi-card-inner-container">
+
+		<div class="atvi-card-media-container">
+
+			<div class="atvi-card-media">
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+                
+
+				
+                
+
+    <div class="atvi-card-image">
+
+        
+        <picture>
+            
+            
+			
+
+			<img src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/tech-luxe/technofyre.webp" role="img"/>
+        </picture>
+
+    </div>
+
+
+
+                
+				
+
+			</div> 
+
+		</div> 
+
+		<div class="atvi-card-content-container">
+
+			<div class="atvi-card-content">
+
+                
+				
+
+				
+				
+
+                    
+                    
+
+                    
+                    <div class="atvi-card-text">
+
+                        
+
+                        <div><p>SUBMACHINE</p>
+<p>WSP-9</p>
+</div>
+<h2>TECHNOFYRE</h2>
+<p>Drop the opposition with this fast and deadly SMG Blueprint.</p>
+<ul>
+<li>MAGAZINE AMMO CAPACITY</li>
+<li>RECOIL CONTROL</li>
+<li>GUN KICK CONTROL</li>
+</ul>
+
+
+                    </div> 
+    
+                    
+					 
+
+				
+
+			</div> 
+
+		</div> 
+
+	</div> 
+
+</div>
+
+</div>
+<div class="atvi-layout-container aem-GridColumn aem-GridColumn--default--12">
+
+
+
+
+
+
+
+
+
+
+<div class="layout-container-element bundle-grid atvi-module-container">
+
+    
+    <div class="atvi-card aem-GridColumn aem-GridColumn--default--12">
+
+    
+
+
+
+
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+	
+	
+
+        @media screen and (max-width: 833px) {
+
+    		
+            #points-card.atvi-card-flexbox-layout > .atvi-card-inner-container {
+				flex-direction: column;
+                height: auto;
+            }
+
+            #points-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-media-container,
+			#points-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-content-container {
+                width: 100%;
+                position: unset;
+            }
+
+			
+			
+
+        }
+
+		
+		
+
+
+    
+
+    
+	
+
+</style>
+
+
+<div id="points-card" class="atvi-card-container  atvi-card-vertical-image-top atvi-card-flexbox-layout" data-atvi-card-type="image">
+
+	<div class="atvi-card-inner-container">
+
+		<div class="atvi-card-media-container">
+
+			<div class="atvi-card-media">
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+                
+
+				
+                
+
+    <div class="atvi-card-image">
+
+        
+        <picture>
+            
+            
+			
+
+			<img src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/tech-luxe/Bundle_CP.webp" role="img"/>
+        </picture>
+
+    </div>
+
+
+
+                
+				
+
+			</div> 
+
+		</div> 
+
+		<div class="atvi-card-content-container">
+
+			<div class="atvi-card-content">
+
+                
+				
+
+				
+				
+
+                    
+                    
+
+                    
+                    <div class="atvi-card-text">
+
+                        
+
+                        <p>COD POINTS</p>
+<h2>2,400 COD POINTS</h2>
+
+
+                    </div> 
+    
+                    
+					 
+
+				
+
+			</div> 
+
+		</div> 
+
+	</div> 
+
+</div>
+
+</div>
+<div class="atvi-card aem-GridColumn aem-GridColumn--default--12">
+
+    
+
+
+
+
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+	
+	
+
+        @media screen and (max-width: 833px) {
+
+    		
+            #weapon-charm-card.atvi-card-flexbox-layout > .atvi-card-inner-container {
+				flex-direction: column;
+                height: auto;
+            }
+
+            #weapon-charm-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-media-container,
+			#weapon-charm-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-content-container {
+                width: 100%;
+                position: unset;
+            }
+
+			
+			
+
+        }
+
+		
+		
+
+
+    
+
+    
+	
+
+</style>
+
+
+<div id="weapon-charm-card" class="atvi-card-container  atvi-card-vertical-image-top atvi-card-flexbox-layout" data-atvi-card-type="image">
+
+	<div class="atvi-card-inner-container">
+
+		<div class="atvi-card-media-container">
+
+			<div class="atvi-card-media">
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+                
+
+				
+                
+
+    <div class="atvi-card-image">
+
+        
+        <picture>
+            
+            
+			
+
+			<img src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/tech-luxe/weapon-charm.webp" role="img"/>
+        </picture>
+
+    </div>
+
+
+
+                
+				
+
+			</div> 
+
+		</div> 
+
+		<div class="atvi-card-content-container">
+
+			<div class="atvi-card-content">
+
+                
+				
+
+				
+				
+
+                    
+                    
+
+                    
+                    <div class="atvi-card-text">
+
+                        
+
+                        <p>WEAPON CHARM</p>
+<h2>Shadow Fighter</h2>
+
+
+                    </div> 
+    
+                    
+					 
+
+				
+
+			</div> 
+
+		</div> 
+
+	</div> 
+
+</div>
+
+</div>
+<div class="atvi-card aem-GridColumn aem-GridColumn--default--12">
+
+    
+
+
+
+
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+	
+	
+
+        @media screen and (max-width: 833px) {
+
+    		
+            #weapon-sticker-card.atvi-card-flexbox-layout > .atvi-card-inner-container {
+				flex-direction: column;
+                height: auto;
+            }
+
+            #weapon-sticker-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-media-container,
+			#weapon-sticker-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-content-container {
+                width: 100%;
+                position: unset;
+            }
+
+			
+			
+
+        }
+
+		
+		
+
+
+    
+
+    
+	
+
+</style>
+
+
+<div id="weapon-sticker-card" class="atvi-card-container  atvi-card-vertical-image-top atvi-card-flexbox-layout" data-atvi-card-type="image">
+
+	<div class="atvi-card-inner-container">
+
+		<div class="atvi-card-media-container">
+
+			<div class="atvi-card-media">
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+                
+
+				
+                
+
+    <div class="atvi-card-image">
+
+        
+        <picture>
+            
+            
+			
+
+			<img src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/tech-luxe/weapon-sticker.webp" role="img"/>
+        </picture>
+
+    </div>
+
+
+
+                
+				
+
+			</div> 
+
+		</div> 
+
+		<div class="atvi-card-content-container">
+
+			<div class="atvi-card-content">
+
+                
+				
+
+				
+				
+
+                    
+                    
+
+                    
+                    <div class="atvi-card-text">
+
+                        
+
+                        <p>WEAPON STICKER</p>
+<h2>Three by Three</h2>
+
+
+                    </div> 
+    
+                    
+					 
+
+				
+
+			</div> 
+
+		</div> 
+
+	</div> 
+
+</div>
+
+</div>
+<div class="atvi-card aem-GridColumn aem-GridColumn--default--12">
+
+    
+
+
+
+
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+	
+	
+
+        @media screen and (max-width: 833px) {
+
+    		
+            #calling-card.atvi-card-flexbox-layout > .atvi-card-inner-container {
+				flex-direction: column;
+                height: auto;
+            }
+
+            #calling-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-media-container,
+			#calling-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-content-container {
+                width: 100%;
+                position: unset;
+            }
+
+			
+			
+
+        }
+
+		
+		
+
+
+    
+
+    
+	
+
+</style>
+
+
+<div id="calling-card" class="atvi-card-container  atvi-card-vertical-image-top atvi-card-flexbox-layout" data-atvi-card-type="image">
+
+	<div class="atvi-card-inner-container">
+
+		<div class="atvi-card-media-container">
+
+			<div class="atvi-card-media">
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+                
+
+				
+                
+
+    <div class="atvi-card-image">
+
+        
+        <picture>
+            
+            
+			
+
+			<img src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/tech-luxe/calling-card.webp" role="img"/>
+        </picture>
+
+    </div>
+
+
+
+                
+				
+
+			</div> 
+
+		</div> 
+
+		<div class="atvi-card-content-container">
+
+			<div class="atvi-card-content">
+
+                
+				
+
+				
+				
+
+                    
+                    
+
+                    
+                    <div class="atvi-card-text">
+
+                        
+
+                        <p>CALLING CARD</p>
+<h2>Urban Tech</h2>
+
+
+                    </div> 
+    
+                    
+					 
+
+				
+
+			</div> 
+
+		</div> 
+
+	</div> 
+
+</div>
+
+</div>
+<div class="atvi-card aem-GridColumn aem-GridColumn--default--12">
+
+    
+
+
+
+
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+	
+	
+
+        @media screen and (max-width: 833px) {
+
+    		
+            #emblem-card.atvi-card-flexbox-layout > .atvi-card-inner-container {
+				flex-direction: column;
+                height: auto;
+            }
+
+            #emblem-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-media-container,
+			#emblem-card.atvi-card-flexbox-layout > .atvi-card-inner-container .atvi-card-content-container {
+                width: 100%;
+                position: unset;
+            }
+
+			
+			
+
+        }
+
+		
+		
+
+
+    
+
+    
+	
+
+</style>
+
+
+<div id="emblem-card" class="atvi-card-container  atvi-card-vertical-image-top atvi-card-flexbox-layout" data-atvi-card-type="image">
+
+	<div class="atvi-card-inner-container">
+
+		<div class="atvi-card-media-container">
+
+			<div class="atvi-card-media">
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+				
+
+				
+                
+
+				
+                
+
+    <div class="atvi-card-image">
+
+        
+        <picture>
+            
+            
+			
+
+			<img src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/tech-luxe/animated-emblem.webp" role="img"/>
+        </picture>
+
+    </div>
+
+
+
+                
+				
+
+			</div> 
+
+		</div> 
+
+		<div class="atvi-card-content-container">
+
+			<div class="atvi-card-content">
+
+                
+				
+
+				
+				
+
+                    
+                    
+
+                    
+                    <div class="atvi-card-text">
+
+                        
+
+                        <p>ANIMATED EMBLEM</p>
+<h2>Fiendish Fashion</h2>
+
+
+                    </div> 
+    
+                    
+					 
+
+				
+
+			</div> 
+
+		</div> 
+
+	</div> 
+
+</div>
+
+</div>
+
+    
+
+</div>
+</div>
+
+    
+</div>
+</div>
+    </div>
+    <div class="stroke">
+      <img src="/content/dam/atvi/callofduty/cod-touchui/store/common/stroke.svg"/>
+    </div>
+    
+  <div id="cod-store-listings-aggregator" data-analytics-container="you-might-also-like">
+    <div class="main-container">
+      <h3>You might also like:</h3>
+      <div class="cards-container">
+        <div class="card" data-idx="1" data-check="/ca/en/store/bundles/warrior-pack">
+          <a href="/ca/en/store/bundles/warrior-pack">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/code-warrior-pack.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>CALL OF DUTY ENDOWMENT</h1>
+                  <h2>WARRIOR PACK</h2>
+                  <p class="bundle-listing-description"><p>2XP Player and Weapon Tokens, Operator Skin, two weapon blueprints and more.</p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $9.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="2" data-check="/ca/en/store/bundles/desert-rogue">
+          <a href="/ca/en/store/bundles/desert-rogue">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/cod-store-desert-rogue_Reye-thumb.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>Desert Rogue</h2>
+                  <p class="bundle-listing-description"><p>2XP Player and Weapon Tokens, Operator Skin, two weapon blueprints and more.</p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>mwii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="3" data-check="/ca/en/store/bundles/urban-veteran">
+          <a href="/ca/en/store/bundles/urban-veteran">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/cod-store-urban-veteran-hero.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>Urban Veteran</h2>
+                  <p class="bundle-listing-description"><p>2XP Player and Weapon Tokens, Operator Skin, two weapon blueprints and more.</p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>mwii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="4" data-check="/ca/en/store/bundles/tech-luxe">
+          <a href="/ca/en/store/bundles/tech-luxe">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/tech-luxe/tech-lux-hero.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>TECH LUXE</h2>
+                  <p class="bundle-listing-description"><p>2XP Player and Weapon Tokens, Operator Skin, two weapon blueprints and more.</p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="5" data-check="/ca/en/store/bundles/pumpkin-patch">
+          <a href="/ca/en/store/bundles/pumpkin-patch">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/pumpkin-patch.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>PUMPKIN PATCH</h2>
+                  <p class="bundle-listing-description"><p>2400 CP, Operator Skin, two weapon blueprints and more. </p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>mwii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="6" data-check="/ca/en/store/bundles/moto-freak">
+          <a href="/ca/en/store/bundles/moto-freak">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/moto-freak.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>MOTO FREAK</h2>
+                  <p class="bundle-listing-description"><p>2400 CP, Operator Skin, two weapon blueprints and more. </p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="7" data-check="/ca/en/store/bundles/gunslinger-ghost">
+          <a href="/ca/en/store/bundles/gunslinger-ghost">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/gunslinger-ghost.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>GUNSLINGER GHOST</h2>
+                  <p class="bundle-listing-description"><p>2400 CP, Operator Skin, two weapon blueprints and more. </p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>mwii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="8" data-check="/ca/en/store/bundles/cosmic-traveler">
+          <a href="/ca/en/store/bundles/cosmic-traveler">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/cosmic-traveler.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>COSMIC TRAVELER</h2>
+                  <p class="bundle-listing-description"><p>2400 CP, Operator Skin, two weapon blueprints and more. </p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>mwii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="9" data-check="/ca/en/store/bundles/valkyrie-pack">
+          <a href="/ca/en/store/bundles/valkyrie-pack">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/cod-store-the_valkyrie-hero.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>CALL OF DUTY ENDOWMENT</h1>
+                  <h2>Valkyrie Pack</h2>
+                  <p class="bundle-listing-description"><p>2400 CP, Operator Skin, two weapon blueprints and more. </p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>mwii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $9.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="10" data-check="/ca/en/store/bundles/griffin">
+          <a href="/ca/en/store/bundles/griffin">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/Store_BundlePDP_Griffin_hero.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>GRIFFIN</h2>
+                  <p class="bundle-listing-description"><p>2400 CP, Operator Skin, two weapon blueprints and more. </p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>mwii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="11" data-check="/ca/en/store/bundles/graffiti-tactical">
+          <a href="/ca/en/store/bundles/graffiti-tactical">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/graffiti-tactical.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>GRAFFITI TACTICAL</h2>
+                  <p class="bundle-listing-description"><p>2400 CP, Operator Skin, two weapon blueprints and more.</p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>mwii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="12" data-check="/ca/en/store/bundles/manticore">
+          <a href="/ca/en/store/bundles/manticore">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/cod-store-manticore-hero.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>Manticore</h2>
+                  <p class="bundle-listing-description"><p>2400 CP, Operator Skin, two weapon blueprints and more.</p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>mwii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      
+        <div class="card" data-idx="13" data-check="/ca/en/store/bundles/demon-deer">
+          <a href="/ca/en/store/bundles/demon-deer">
+            
+
+            <div class="card-media bundles">
+              <img class="bg" src="/content/dam/atvi/callofduty/cod-touchui/store/premium-bundles/listings/Store_BundlePDP_Demon-deer-bracken.webp"/>
+            </div>
+
+            <div class="card-info">
+              <div class="info-inner-container">
+                <div class="card-text">
+                  <h1>PRO PACK BUNDLE</h1>
+                  <h2>Demon Deer</h2>
+                  <p class="bundle-listing-description"><p>2400 CP, Operator Skin, two weapon blueprints and more.</p>
+</p>
+                </div>
+                <div class="card-logos tags">
+                  <p>mwiii</p>
+                
+                  <p>mwii</p>
+                
+                  <p>wz</p>
+                </div>
+                <div class="card-price bundles">
+                  <p>
+                    $19.99
+                  </p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+  <div class="choose-your-edition-container">
+    <div class="modal-edition">
+      <div class="bundle-header">
+        <p>Pro Pack Bundle</p>
+        <div class="bundle-details">
+          <h5>TECH LUXE</h5>
+          <h5>$19.99</h5>
+        </div>
+      </div>
+      <div class="edition-details">
+        <p>Choose your platform:</p>
+        <ul>
+          <li>
+            <a class="standard-edition selected" href="https://store.playstation.com/en-us/product/UP0002-CUSA23827_00-CODMW3PROPACK002" data-price="$19.99" data-bundle="TECH LUXE" target="_blank">
+              <!-- /* Playstation */ -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <path d="M0.647647 22.0695C-0.551594 22.8691 -0.151903 24.3881 2.40656 25.1078C5.04509 25.9872 7.92333 26.2271 10.7217 25.7473C10.8817 25.7473 11.0415 25.6674 11.1214 25.6674V22.949L8.40293 23.8284C7.3635 24.1482 6.32406 24.2281 5.2848 23.9884C4.48525 23.7485 4.64523 23.2688 5.60459 22.8691L11.1214 20.9502V17.9919L3.44582 20.6304C2.48646 20.9502 1.52693 21.43 0.647477 22.0695H0.647647ZM19.1968 10.0764V17.8319C22.4749 19.431 25.0333 17.8319 25.0333 13.6743C25.0333 9.51678 23.5141 7.51799 19.1169 5.99879C16.7981 5.19924 14.3996 4.47976 12.001 4V27.1065L17.5977 28.7856V9.3568C17.5977 8.47735 17.5977 7.8376 18.2372 8.07749C19.1167 8.31737 19.1966 9.19682 19.1966 10.0763L19.1968 10.0764ZM29.5908 20.2305C27.2722 19.431 24.7936 19.1112 22.395 19.3511C21.1157 19.431 19.9164 19.7508 18.7971 20.1506L18.5572 20.2305V23.3487L23.7542 21.4298C24.7936 21.11 25.8331 21.0301 26.8723 21.2698C27.6719 21.5097 27.5119 21.9895 26.5525 22.3891L18.5572 25.3475V28.3857L29.5908 24.308C30.3903 23.9882 31.11 23.5884 31.7495 22.9488C32.3092 22.1493 32.0693 21.0299 29.5908 20.2304V20.2305Z" fill="white"/>
+              </svg>
+              <!-- /* Xbox */ -->
+              
+              <!-- /* Battle.net */ -->
+              
+              <!-- /* Steam */ -->
+              
+              <div class="retail-text-container">
+                <span>Playstation</span>
+                <span class="gens">
+                  (PS5 + PS4)
+                </span>
+                
+                
+                
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" viewBox="0 0 10 18" fill="none">
+                <path d="M8.28912 9L0.202339 16.4179C-0.0727606 16.6703 -0.0665655 17.0739 0.216175 17.3194C0.498916 17.5649 0.951134 17.5594 1.22623 17.3071L9.79766 9.44456C10.0674 9.19709 10.0674 8.80291 9.79766 8.55544L1.22623 0.692936C0.951134 0.44059 0.498916 0.435061 0.216175 0.680588C-0.0665655 0.926113 -0.0727606 1.32972 0.202339 1.58206L8.28912 9Z" fill="#F3F4F5"/>
+              </svg>
+            </a>
+          </li>
+        
+          <li>
+            <a class="standard-edition selected" href="https://www.xbox.com/en-US/games/store/call-of-duty-modern-warfare-iii-tech-luxe-pro-pack/9PH0SBRTGGL9" data-price="$19.99" data-bundle="TECH LUXE" target="_blank">
+              <!-- /* Playstation */ -->
+              
+              <!-- /* Xbox */ -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <path d="M8.79161 5.20863C8.85835 5.14492 8.92813 5.08424 9.00398 5.02963C11.0427 3.70688 13.3939 3 16.003 3C18.4422 3 20.7297 3.67655 22.6775 4.84761C22.8201 4.92952 23.2084 5.1965 23.4056 5.43617C21.5216 3.36103 15.9879 7.81773 15.9879 7.81773C14.0765 6.34025 12.3139 5.33605 11.0063 4.97503C9.90806 4.67468 9.15264 4.92648 8.79161 5.20863ZM25.5353 7.16849C25.4807 7.10478 25.417 7.04713 25.3594 6.98039C24.8861 6.45857 24.3006 6.33418 23.7727 6.36452C23.2903 6.51925 21.0726 7.31715 18.3391 9.89894C18.3391 9.89894 21.4154 12.8903 23.3024 15.9514C25.1864 19.0095 26.312 21.4154 25.6203 24.7496C27.7986 22.3559 29.006 19.2371 29 16C29 12.593 27.6894 9.48634 25.5353 7.16849ZM20.839 17.256C19.6406 15.915 18.3998 14.6105 17.1225 13.3454C16.7645 12.9904 16.3853 12.6173 15.9848 12.232C15.9848 12.232 15.3841 12.8327 14.6075 13.6215V13.6184C13.6093 14.6287 12.3139 15.9423 11.5949 16.7129C10.3146 18.0782 6.64669 22.365 6.44342 24.7708C6.44342 24.7708 5.62732 22.8655 7.41728 18.4665C8.58531 15.5874 12.1197 11.2733 13.5942 9.86557C13.5942 9.86557 12.2441 8.38506 10.5543 7.35962L10.5421 7.35659C10.5421 7.35659 10.5209 7.34142 10.4966 7.32625C9.68356 6.84083 8.79161 6.46464 7.9391 6.41306C7.06839 6.47677 6.5132 7.11691 6.5132 7.11691C4.253 9.51668 2.99395 12.6992 3.00002 16.003C3.00002 23.1841 8.81892 29.003 16.003 29.003C19.8135 29.003 23.2387 27.3617 25.6203 24.7465C25.6203 24.7435 25.3472 23.0294 23.5998 20.5689C23.1841 19.9955 21.6854 18.1995 20.839 17.256Z" fill="white"/>
+              </svg>
+              <!-- /* Battle.net */ -->
+              
+              <!-- /* Steam */ -->
+              
+              <div class="retail-text-container">
+                <span>Xbox</span>
+                
+                <span class="gens">
+                  (SERIES X|S + ONE)
+                </span>
+                
+                
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" viewBox="0 0 10 18" fill="none">
+                <path d="M8.28912 9L0.202339 16.4179C-0.0727606 16.6703 -0.0665655 17.0739 0.216175 17.3194C0.498916 17.5649 0.951134 17.5594 1.22623 17.3071L9.79766 9.44456C10.0674 9.19709 10.0674 8.80291 9.79766 8.55544L1.22623 0.692936C0.951134 0.44059 0.498916 0.435061 0.216175 0.680588C-0.0665655 0.926113 -0.0727606 1.32972 0.202339 1.58206L8.28912 9Z" fill="#F3F4F5"/>
+              </svg>
+            </a>
+          </li>
+        
+          <li>
+            <a class="standard-edition selected" href="https://us.shop.battle.net/en-us/product/call-of-duty-modern-warfare-iii-wz-tech-luxe-pro-pack?p=1598938" data-price="$19.99" data-bundle="TECH LUXE" target="_blank">
+              <!-- /* Playstation */ -->
+              
+              <!-- /* Xbox */ -->
+              
+              <!-- /* Battle.net */ -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <path d="M23.5278 11.5667C20.2394 10.0457 15.5049 9.07629 11.0543 9.43513C11.2792 7.9623 11.8309 6.934 12.7306 6.71977C13.9732 6.41984 15.3282 7.23927 16.6243 8.72817C17.4705 8.83528 18.4774 9.03345 19.1736 9.19412C16.8171 4.75956 13.6518 2.26914 11.2471 3.19033C9.41543 3.88658 8.47818 6.40913 8.59065 9.79396C6.20734 10.3028 4.3489 11.2025 3.15992 12.4986C3.10101 12.5682 2.96176 12.745 3.00996 12.8307C3.04745 12.8949 3.17063 12.8253 3.21884 12.7878C4.60062 11.8238 6.36266 11.2989 8.66563 10.9722C8.99233 14.582 10.5187 19.1665 13.0573 22.8406C11.6702 23.3868 10.508 23.419 9.86532 22.7442C8.98697 21.8176 9.01375 20.2323 9.65644 18.3685C9.32974 17.5812 8.99233 16.6118 8.78346 15.9263C6.12165 20.1841 5.54859 24.1688 7.54628 25.7916C9.06731 27.0288 11.713 26.5789 14.5891 24.7901C16.2226 26.6003 17.9311 27.7571 19.6449 28.1427C19.736 28.1588 19.9555 28.1909 20.0037 28.1053C20.0412 28.041 19.9181 27.9714 19.8591 27.9446C18.3328 27.2323 16.9992 25.963 15.5638 24.1366C18.5256 22.0479 21.7283 18.4328 23.6457 14.3999C24.8132 15.3318 25.4238 16.3226 25.1613 17.2117C24.7971 18.4381 23.41 19.204 21.4766 19.5789C20.9571 20.2591 20.2876 21.0303 19.8002 21.5552C24.8186 21.7319 28.5569 20.2323 28.9639 17.6937C29.2745 15.7603 27.5607 13.6876 24.5722 12.0916C25.3274 9.77254 25.472 7.71593 24.9471 6.03423C24.915 5.94854 24.8346 5.73966 24.7329 5.73966C24.6579 5.73966 24.6579 5.87891 24.6632 5.94318C24.8239 7.61953 24.3955 9.41371 23.5278 11.5667ZM14.2838 22.2621C12.1629 18.8559 10.9365 14.8391 10.9418 10.7848C14.9533 10.6509 19.0397 11.5935 22.5531 13.634C20.6679 17.1688 17.8025 20.2377 14.2838 22.2621Z" fill="white"/>
+              </svg>
+              <!-- /* Steam */ -->
+              
+              <div class="retail-text-container">
+                <span>Battle.net</span>
+                
+                
+                <span class="gens">
+                  (PC)
+                </span>
+                
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" viewBox="0 0 10 18" fill="none">
+                <path d="M8.28912 9L0.202339 16.4179C-0.0727606 16.6703 -0.0665655 17.0739 0.216175 17.3194C0.498916 17.5649 0.951134 17.5594 1.22623 17.3071L9.79766 9.44456C10.0674 9.19709 10.0674 8.80291 9.79766 8.55544L1.22623 0.692936C0.951134 0.44059 0.498916 0.435061 0.216175 0.680588C-0.0665655 0.926113 -0.0727606 1.32972 0.202339 1.58206L8.28912 9Z" fill="#F3F4F5"/>
+              </svg>
+            </a>
+          </li>
+        
+          <li>
+            <a class="standard-edition selected" href="https://store.steampowered.com/app/2686650/Call_of_Duty_Modern_Warfare_III__Tech_Luxe_Pro_Pack/" data-price="$19.99" data-bundle="TECH LUXE" target="_blank">
+              <!-- /* Playstation */ -->
+              
+              <!-- /* Xbox */ -->
+              
+              <!-- /* Battle.net */ -->
+              
+              <!-- /* Steam */ -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <path d="M15.9776 3C9.13636 3 3.53221 8.32311 3 15.0873L9.9798 17.9995C10.5892 17.5777 11.3131 17.3521 12.0543 17.3529C12.1236 17.3529 12.1921 17.3548 12.2595 17.3586L15.3638 12.8177V12.7542C15.3638 10.0218 17.5667 7.79827 20.2747 7.79827C22.9826 7.79827 25.1854 10.0218 25.1854 12.7542C25.1854 15.4865 22.9825 17.7108 20.2747 17.7108C20.2371 17.7108 20.2005 17.7098 20.1632 17.709L15.7358 20.8957C15.7386 20.9548 15.7404 21.0139 15.7404 21.0719C15.7404 23.124 14.0867 24.7928 12.0543 24.7928C10.2703 24.7928 8.77766 23.5072 8.44032 21.8057L3.44792 19.7227C4.99403 25.2389 10.0163 29.2829 15.9776 29.2829C23.17 29.2829 29 23.3986 29 16.1414C29 8.88425 23.17 3 15.9776 3ZM11.1608 22.9399L9.56134 22.2728C9.84439 22.8687 10.3353 23.3671 10.9866 23.6409C12.3939 24.233 14.0168 23.5594 14.6034 22.1379C14.8874 21.4544 14.8891 20.6863 14.608 20.0015C14.3269 19.3119 13.7956 18.774 13.1144 18.4873C12.437 18.2034 11.7117 18.2137 11.0745 18.4565L12.7274 19.1461C13.7656 19.5829 14.2566 20.7859 13.8237 21.8334C13.3918 22.8809 12.1989 23.3767 11.1608 22.9399ZM23.547 12.7543C23.547 10.9337 22.0788 9.45149 20.275 9.45149C18.4712 9.45149 17.002 10.9338 17.002 12.7543C17.002 14.5747 18.4703 16.0563 20.275 16.0563C22.0797 16.0563 23.547 14.5749 23.547 12.7543ZM17.822 12.7487C17.822 11.3788 18.9229 10.2685 20.2798 10.2685C21.6368 10.2685 22.7384 11.3788 22.7384 12.7487C22.7384 14.1186 21.6375 15.2289 20.2797 15.2289C18.922 15.2289 17.8219 14.1186 17.8219 12.7488L17.822 12.7487Z" fill="white"/>
+              </svg>
+              <div class="retail-text-container">
+                <span>Steam</span>
+                
+                
+                
+                <span class="gens">
+                  (PC)
+                </span>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" viewBox="0 0 10 18" fill="none">
+                <path d="M8.28912 9L0.202339 16.4179C-0.0727606 16.6703 -0.0665655 17.0739 0.216175 17.3194C0.498916 17.5649 0.951134 17.5594 1.22623 17.3071L9.79766 9.44456C10.0674 9.19709 10.0674 8.80291 9.79766 8.55544L1.22623 0.692936C0.951134 0.44059 0.498916 0.435061 0.216175 0.680588C-0.0665655 0.926113 -0.0727606 1.32972 0.202339 1.58206L8.28912 9Z" fill="#F3F4F5"/>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-btn">
+      <button class="edition-buy-now-btn">
+        <span class="buy-now-text">Buy Now</span>
+        <span class="close-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M29.9142 8.58579C30.6953 9.36684 30.6953 10.6332 29.9142 11.4142L16.5 24.8284L3.08578 11.4142C2.30474 10.6332 2.30474 9.36683 3.08578 8.58579C3.86683 7.80474 5.13316 7.80474 5.91421 8.58579L16.5 19.1716L27.0858 8.58579C27.8668 7.80474 29.1332 7.80474 29.9142 8.58579Z" fill="black"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+    <div class="overlay hide"></div>
+  </div>
+
+  </div>
+</main>
+</div>
+
+    
+
+</div>
+</div>
+
+    
+</div>
+</div>
+<div class="atvi-experiencefragment aem-GridColumn aem-GridColumn--default--12">
+
+
+    
+    
+		<div id="atvi_experiencefragm_595924441" class=" atvi-module-container">
+			
+
+<section class="experience-fragment-container ">
+	
+
+	
+
+
+<div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+    
+    <div class="responsivegrid aem-GridColumn aem-GridColumn--default--12">
+
+
+<div class="aem-Grid aem-Grid--12 aem-Grid--default--12 ">
+    
+    <div class="cod-footer aem-GridColumn aem-GridColumn--default--12">            
+
+    
+<link rel="stylesheet" href="/apps/atvi/callofduty/global/components/structure/v2023/cod-footer/clientlibs.1f325a575b8ffc95c07cf27333b1c872.css" type="text/css"><script type="text/javascript" src="/apps/atvi/callofduty/global/components/structure/v2023/cod-footer/clientlibs.ba1dd3ce21f33e9ef6afe36d90358957.js" defer></script>
+
+
+
+
+
+
+
+<footer class="cod-global-footer ">
+
+	<div class="inner-footer">
+
+		<div class="legal-links">
+			
+                <ul>
+                    <li>
+						<a href="https://www.activision.com/ca/en/legal" target="_blank">
+                        	Legal
+                    	</a>
+					</li>
+                
+                    <li>
+						<a href="https://www.activision.com/ca/en/legal/terms-of-use" target="_blank">
+                        	Terms of Use
+                    	</a>
+					</li>
+                
+                    <li>
+						<a href="https://www.activision.com/ca/en/legal/privacy-policy" target="_blank">
+                        	Privacy Policy
+                    	</a>
+					</li>
+                
+                    <li>
+						<a href="https://careers.activision.com" target="_blank">
+                        	Careers
+                    	</a>
+					</li>
+                
+                    <li>
+						<a href="https://www.activision.com/ca/en/legal/cookie-policy" target="_blank">
+                        	Cookie Policy
+                    	</a>
+					</li>
+                
+                    <li>
+						<a href="https://support.activision.com" target="_blank">
+                        	Support
+                    	</a>
+					</li>
+                
+                    <li>
+						<a href="https://www.callofduty.com/ca/en/values" target="_blank">
+                        	Code of Conduct
+                    	</a>
+					</li>
+                </ul>
+            
+		</div>
+
+		<div class="studio-links">
+			
+                <ul>
+                    <li class="atvi-logo">
+                        <a href="https://www.activision.com/ca/en" target="_blank" aria-label="Visit the Activision website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/activision-logo.png" alt="Activision logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="treyarch-logo">
+                        <a href="https://www.treyarch.com" target="_blank" aria-label="Visit the Treyarch website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/treyarch-logo.png" alt="Treyarch Logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="shg-logo">
+                        <a href="https://www.sledgehammergames.com" target="_blank" aria-label="Visit the Sledgehammer Games website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/shg-logo.png" alt="Sledgehammer Games Logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="hms-logo">
+                        <a href="https://www.highmoonstudios.com" target="_blank" aria-label="Visit the Highmoon Studios website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/high-moon-logo.png" alt="High Moon Studios logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="digital-logo">
+                        <a href="https://www.digital-legends.com" target="_blank" aria-label="Visit the Digital Legends Entertainment website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/digital-legends-logo.png" alt="Digital Legends Entertainment logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="shanghai-logo">
+                        <a href="https://www.activision.com/company/locations/shanghai" target="_blank" aria-label="Visit the Activision Shanghai Studio profile page">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/atvi-shanghai-logo.png" alt="Shanghai Studio logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="iw-logo">
+                        <a href="https://www.infinityward.com" target="_blank" aria-label="Visit the Infinity Ward website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/infinity-ward-logo.png" alt="Infinity Ward logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="raven-logo">
+                        <a href="https://www.ravensoftware.com" target="_blank" aria-label="Visit the Raven Software website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/raven-logo.png" alt="Raven logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="tfb-logo">
+                        <a href="https://www.toysforbob.com" target="_blank" aria-label="Visit the Toys for Bob website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/toys-for-bob-logo.png" alt="Toys for Bob logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="solid-state-logo">
+                        <a href="https://www.activision.com/solidstate" target="_blank" aria-label="Visit the Solid State Studios website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/solid-state-logo.png" alt="Solid State Studios logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="dw-logo">
+                        <a href="https://www.demonware.net" target="_blank" aria-label="Visit the Demonware website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/demonware-logo.png" alt="Demonware logo" loading="lazy"/>
+                        </a>
+                    </li>
+                
+                    <li class="beenox-logo">
+                        <a href="https://www.beenox.com" target="_blank" aria-label="Visit the Beenox website">
+                            <img src="/content/dam/atvi/callofduty/cod-touchui/hub/studio-logos/beenox-logo.png" alt="Beenox logo" loading="lazy"/>
+                        </a>
+                    </li>
+                </ul>
+            
+		</div>
+
+		<div class="rating-links">
+			<ul>
+                <li class="na-logo">
+                	<a target="_blank" class="esrb-pc" href="https://www.esrb.org/EPCConfirm/832/" aria-label="Visit the Activision ESRB Privacy Certified Profile">
+                		<img src="https://imgs.callofduty.com/content/dam/atvi/global/ratings/esrb/esrb-privacy.jpg" alt="ESBR Privacy Certified Logo" loading="lazy"/>
+                	</a>
+                </li>
+				<li class="na-logo">
+					<a class="rating-logo" aria-label="Visit the rating board website" href="https://www.esrb.org"><img src="https://imgs.callofduty.com/content/dam/atvi/global/ratings/esrb/cod-hub-esrb-en.png" alt="ESRB Mature 17+: Blood and Gore, Intense Violence, Strong Language, Suggestive Themes, Use of Drugs, In-game Purchases / Users Interact" loading="lazy"/></a>
+                </li>
+            </ul>
+		</div>
+
+		<div class="copyright">
+			
+                
+                <p>© 2024 Activision Publishing, Inc. ACTIVISION, CALL OF DUTY, CALL OF DUTY LEAGUE, MODERN WARFARE, CALL OF DUTY BLACK OPS, CALL OF DUTY WARZONE, and CALL OF DUTY VANGUARD are trademarks of Activision Publishing, Inc. All other trademarks and trade names are the property of their respective owners.</p>
+
+            
+		</div>
+
+		<div class="cookie-settings">
+			<button id="ot-sdk-btn" aria-label="Configure cookie settings" class="ot-sdk-show-settings">Cookie Settings</button>
+		</div>
+
+		<div class="footer-locale-selector">
+			<div>
+    
+<link rel="stylesheet" href="/apps/atvi/global/components/content/atvi-locale-selector/clientlibs.bfd96b63985d4fa9fea9836598b43972.css" type="text/css">
+<script src="/apps/atvi/global/components/content/atvi-locale-selector/clientlibs.1f58109aedc4c1822cd6c3fbe5446e57.js"></script>
+
+
+
+
+
+
+<div class="atvi-locale-selector  open-up " data-selectedLocale="en_ca">
+
+    <p class="cur-locale-selector-btn ">
+
+		<button aria-expanded="false" class="flag-button flag-en_ca" aria-label="Selected region - English Canada">
+
+			<span class="flag-icon" aria-hidden="true">English Canada</span>
+			
+
+		</button>
+
+	</p>
+
+    <div class="locale-panel">
+
+		<div class="locale-panel-inner-container">
+
+            <div class="locale-panel-header">
+    
+                <p class="selected-region-text"><span class="label">Selected region:</span> <span class="locale-string">English Canada</span></p>
+                <p class="close-btn"><button aria-label="Close Menu">+</button></p>
+    
+            </div>
+    
+            
+            
+    
+            
+    
+            
+            <ul>
+        
+                <li class=" flag-en" data-lang="en">
+                    <a href="/store/bundles/tech-luxe" aria-label="United States">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">United States</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-en_gb" data-lang="en_gb">
+                    <a href="/uk/en/store/bundles/tech-luxe" aria-label="United Kingdom">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">United Kingdom</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class="active flag-en_ca" data-lang="en_ca">
+                    <a href="/ca/en/store/bundles/tech-luxe" aria-label="English Canada">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">English Canada</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-en_au" data-lang="en_au">
+                    <a href="/au/en/store/bundles/tech-luxe" aria-label="Australia">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Australia</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-en_ar" data-lang="en_ar">
+                    <a href="/ar/en/store/bundles/tech-luxe" aria-label="United Arab Emirates">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">United Arab Emirates</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-en_nz" data-lang="en_nz">
+                    <a href="/nz/en/store/bundles/tech-luxe" aria-label="New Zealand">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">New Zealand</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-fr" data-lang="fr">
+                    <a href="/fr/store/bundles/tech-luxe" aria-label="France">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">France</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-fr_ca" data-lang="fr_ca">
+                    <a href="/ca/fr/store/bundles/tech-luxe" aria-label="Canada Français">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Canada Français</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-fr_be" data-lang="fr_be">
+                    <a href="/be/fr/store/bundles/tech-luxe" aria-label="Belgium Français">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Belgium Français</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-de" data-lang="de">
+                    <a href="/de/store/bundles/tech-luxe" aria-label="Deutschland">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Deutschland</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-it" data-lang="it">
+                    <a href="/it/store/bundles/tech-luxe" aria-label="Italia">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Italia</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-es" data-lang="es">
+                    <a href="/es/store/bundles/tech-luxe" aria-label="España">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">España</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-es_mx" data-lang="es_mx">
+                    <a href="/mx/es/store/bundles/tech-luxe" aria-label="México">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">México</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-es_cl" data-lang="es_cl">
+                    <a href="/cl/es/store/bundles/tech-luxe" aria-label="Chile">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Chile</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-pt" data-lang="pt">
+                    <a href="/pt/store/bundles/tech-luxe" aria-label="Portugal">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Portugal</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-pt_br" data-lang="pt_br">
+                    <a href="/br/pt/store/bundles/tech-luxe" aria-label="Brasil">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Brasil</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-da" data-lang="da">
+                    <a href="/da/store/bundles/tech-luxe" aria-label="Danmark">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Danmark</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-nl" data-lang="nl">
+                    <a href="/nl/store/bundles/tech-luxe" aria-label="Nederland">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Nederland</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-nl_be" data-lang="nl_be">
+                    <a href="/be/nl/store/bundles/tech-luxe" aria-label="Belgium">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Belgium</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-fi" data-lang="fi">
+                    <a href="/fi/store/bundles/tech-luxe" aria-label="Suomi">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Suomi</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-no" data-lang="no">
+                    <a href="/no/store/bundles/tech-luxe" aria-label="Norge">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Norge</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-sv" data-lang="sv">
+                    <a href="/sv/store/bundles/tech-luxe" aria-label="Sverige">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Sverige</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-pl" data-lang="pl">
+                    <a href="/pl/store/bundles/tech-luxe" aria-label="Polska">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Polska</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-ru" data-lang="ru">
+                    <a href="/ru/store/bundles/tech-luxe" aria-label="Россия">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Россия</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-ar" data-lang="ar">
+                    <a href="/ar/store/bundles/tech-luxe" aria-label="Arabic">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Arabic</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-ja" data-lang="ja">
+                    <a href="/ja/store/bundles/tech-luxe" aria-label="日本語">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">日本語</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-ko" data-lang="ko">
+                    <a href="/ko/store/bundles/tech-luxe" aria-label="한국">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">한국</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-zh_cn" data-lang="zh_cn">
+                    <a href="/cn/zh/store/bundles/tech-luxe" aria-label="简体中文">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">简体中文</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-zh_tw" data-lang="zh_tw">
+                    <a href="/tw/zh/store/bundles/tech-luxe" aria-label="繁體中文">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">繁體中文</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-tr" data-lang="tr">
+                    <a href="/tr/store/bundles/tech-luxe" aria-label="Turkish">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Turkish</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-th" data-lang="th">
+                    <a href="/th/store/bundles/tech-luxe" aria-label="Thai">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Thai</div>
+                    </a>
+                </li>
+        
+            
+        
+                <li class=" flag-en_my" data-lang="en_my">
+                    <a href="/my/en/store/bundles/tech-luxe" aria-label="Malaysia">
+                        <div class="flag-icon" aria-hidden="true"></div>
+                        <div class="region">Malaysia</div>
+                    </a>
+                </li>
+        
+            </ul>
+
+		</div>
+
+    </div>
+
+</div></div>
+		</div>
+
+	</div>
+
+</footer>
+</div>
+
+    
+</div>
+</div>
+
+    
+</div>
+
+</section>
+		</div>
+	
+</div>
+
+    
+</div>
+</div>
+
+    
+
+        
+        
+    
+    
+    <div class="atvi-banner-cmp eula-banner-module">
+        <div class="inner">
+            <div class="content">
+                <p>The Software License and Service Agreement will be updated. Please follow this link [<a href="https://www.activision.com/legal/ap-eula">https://www.activision.com/legal/ap-eula</a>] in order to see these changes.</p>
+            </div>
+            <button aria-label="Close" class="close-modal">&times;</div>
+        </div>
+    </div>
+
+
+    
+
+    
+    
+    
+
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+        
+
+
+
+
+		
+		
+
+        <script type="text/javascript">_satellite.pageBottom();</script>
+
+    </body>
+
+
+</html>

@@ -145,7 +145,7 @@ def make_request(sku, game, file_name):
         logging.exception('Exception occurred in make_request(): %s' % ex)
 
 
-# main running function
+# main running function for mw, vg, and cw bundles
 def main(start, stop, game):
     try:
         # define variables
@@ -210,18 +210,89 @@ def test(start, stop, game):
         logging.exception('Exception occurred in test(): %s' % ex)
 
 
+def write_data_mw3(bundle_df, file_name):
+    try:
+        # if file does not exist write header
+        if not os.path.exists(file_name):
+            bundle_df.to_csv(file_name, index=False)
+        else:  # else it exists so append without writing the header
+            bundle_df.to_csv(path_or_buf=file_name, mode='a', index=False, header=False)
+    except Exception as ex:
+        logging.exception('Exception occurred in write_data_mw3(): %s' % ex)
+
+
+# main running function for mw3 bundles
+# todo: create new column in bundles_mw3 with amount of bundle items
+def main_mw3():
+    try:
+        # define variables
+        logging.basicConfig(filename='codstore.log', encoding='utf-8', level=logging.DEBUG, filemode='w')
+        type_list = []
+        title_list = []
+        url_list = []
+        cost_list = []
+
+        # set url
+        url = 'https://www.callofduty.com/ca/en/store/bundles'
+
+        # set headers
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+        }
+
+        # perform HTTP GET request
+        with rq.get(url=url, headers=headers, timeout=1, allow_redirects=False) as req:
+            req_content = req.content
+
+        # parse html response content
+        soup = BeautifulSoup(req_content, 'html.parser')
+        bundle_cards = soup.find_all('div', class_='card')
+
+        # iterate over bundle cards to extract their contents
+        for card in bundle_cards:
+            bundle_type = card.find('p', class_='eyebrow').text
+            bundle_title = card.find('h5').text
+            bundle_url = 'https://www.callofduty.com' + card.find('a').attrs['href']
+            bundle_cost = card.find('div', class_='card-price bundles').contents[0].text.strip()
+
+            type_list.append(bundle_type)
+            title_list.append(bundle_title)
+            url_list.append(bundle_url)
+            cost_list.append(bundle_cost)
+
+        # define dict for bundle data
+        bundle_dict = {'title': title_list, 'url': url_list, 'type': type_list, 'cost': cost_list}
+        # write dataframe to .csv
+        bundle_df = pd.DataFrame.from_dict(data=bundle_dict)
+
+        # read existing bundle titles from file
+        file_name = 'C:/repos/codstore/data/bundles_mw3.csv'
+        if os.path.exists(file_name):
+            existing_titles = pd.read_csv(filepath_or_buffer=file_name, usecols=['title'])['title'].to_list()
+            # exclude bundles that already exist in file
+            bundle_df = bundle_df[~bundle_df['title'].isin(existing_titles)]
+
+        # invoke function to write data to file
+        write_data_mw3(bundle_df, file_name)
+    except Exception as ex:
+        logging.exception('Exception occurred in main_mw3(): %s' % ex)
+
+
 if __name__ == '__main__':
+    # mw3 bundles
+    main_mw3()
+
     # mw bundles
-    start = 400512 # 400003
-    stop = 400003 # 400512
-    game = 'mw'
-    main(start, stop, game)
+    # start = 400512 # 400003
+    # stop = 400003 # 400512
+    # game = 'mw'
+    # main(start, stop, game)
 
     # vg bundles
-    start = 33954800  # 33954000
-    stop = 33954000  # 33955000
-    game = 'vg'
-    main(start, stop, game)
+    # start = 33954800  # 33954000
+    # stop = 33954000  # 33955000
+    # game = 'vg'
+    # main(start, stop, game)
 
     # todo: figure out urls for cw bundles as they do not seem to be on website
     # cw bundles
