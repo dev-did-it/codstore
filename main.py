@@ -57,7 +57,7 @@ def get_bundle_cost(sku, game, headers):
 # backfill cost for existing bundles
 def backfill_cost(game):
     try:
-        file_name = 'C:/repos/codstore/data/bundles_{game}.csv'.format(game=game)
+        file_name = 'C:/repos/codstore/data/csv/bundles_{game}.csv'.format(game=game)
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
         }
@@ -154,7 +154,7 @@ def main(start, stop, game):
         initial_skus = range(start, stop, -1)
 
         # read skus from file for comparison with sku list
-        file_name = 'C:/repos/codstore/data/bundles_{game}.csv'.format(game=game)
+        file_name = 'C:/repos/codstore/data/csv/bundles_{game}.csv'.format(game=game)
 
         if os.path.exists(file_name):
             file_skus = pd.read_csv(filepath_or_buffer=file_name, usecols=['sku'])['sku'].to_list()
@@ -185,7 +185,7 @@ def test(start, stop, game):
         initial_skus = range(start, stop, -1)
 
         # read skus from file for comparison with sku list
-        file_name = 'C:/repos/codstore/data/bundles_{game}.csv'.format(game=game)
+        file_name = 'C:/repos/codstore/data/csv/bundles_{game}.csv'.format(game=game)
 
         if os.path.exists(file_name):
             file_skus = pd.read_csv(filepath_or_buffer=file_name, usecols=['sku'])['sku'].to_list()
@@ -210,6 +210,27 @@ def test(start, stop, game):
         logging.exception('Exception occurred in test(): %s' % ex)
 
 
+# retrieves amount of items in a mw3 bundle
+def get_bundle_items_mw3(url):
+    # set headers
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+    }
+
+    # perform HTTP GET request
+    with rq.get(url=url, headers=headers, timeout=1, allow_redirects=False) as req:
+        req_content = req.content
+
+    # parse html response content
+    soup = BeautifulSoup(req_content, 'html.parser')
+
+    # find all bundle items
+    bundle_items = len(soup.find_all('div', class_='atvi-card-text'))
+
+    return bundle_items
+
+
+# writes mw3 bundle data to a .csv
 def write_data_mw3(bundle_df, file_name):
     try:
         # if file does not exist write header
@@ -222,7 +243,6 @@ def write_data_mw3(bundle_df, file_name):
 
 
 # main running function for mw3 bundles
-# todo: create new column in bundles_mw3 with amount of bundle items
 def main_mw3():
     try:
         # define variables
@@ -231,6 +251,7 @@ def main_mw3():
         title_list = []
         url_list = []
         cost_list = []
+        item_list = []
 
         # set url
         url = 'https://www.callofduty.com/ca/en/store/bundles'
@@ -254,19 +275,21 @@ def main_mw3():
             bundle_title = card.find('h5').text
             bundle_url = 'https://www.callofduty.com' + card.find('a').attrs['href']
             bundle_cost = card.find('div', class_='card-price bundles').contents[0].text.strip()
+            bundle_items = get_bundle_items_mw3(bundle_url)
 
             type_list.append(bundle_type)
             title_list.append(bundle_title)
             url_list.append(bundle_url)
             cost_list.append(bundle_cost)
+            item_list.append(bundle_items)
 
         # define dict for bundle data
-        bundle_dict = {'title': title_list, 'url': url_list, 'type': type_list, 'cost': cost_list}
+        bundle_dict = {'title': title_list, 'url': url_list, 'type': type_list, 'cost': cost_list, 'items': item_list}
         # write dataframe to .csv
         bundle_df = pd.DataFrame.from_dict(data=bundle_dict)
 
         # read existing bundle titles from file
-        file_name = 'C:/repos/codstore/data/bundles_mw3.csv'
+        file_name = 'C:/repos/codstore/data/csv/bundles_mw3.csv'
         if os.path.exists(file_name):
             existing_titles = pd.read_csv(filepath_or_buffer=file_name, usecols=['title'])['title'].to_list()
             # exclude bundles that already exist in file
