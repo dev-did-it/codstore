@@ -274,7 +274,7 @@ def main_mw3():
             bundle_type = card.find('p', class_='eyebrow').text
             bundle_title = card.find('h5').text
             bundle_url = 'https://www.callofduty.com' + card.find('a').attrs['href']
-            bundle_cost = card.find('div', class_='card-price bundles').contents[0].text.strip()
+            bundle_cost = card.find('div', class_='card-price bundles').text.strip()
             bundle_items = get_bundle_items_mw3(bundle_url)
 
             type_list.append(bundle_type)
